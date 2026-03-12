@@ -3,10 +3,26 @@
 The Master Orchestrator for ClawOmics, designed to coordinate complex bioinformatics workflows, manage environments, and provide AI-driven interpretation of results across diverse biological data types.
 
 ## Metadata
-- **Version**: 1.0.0
+- **Version**: 1.1.0
 - **Category**: Bioinformatics Orchestration
 - **Keywords**: bioinformatics, workflows, orchestration, NGS, single-cell, multi-omics, conda, mamba, results-interpretation
 - **Compatible Skills**: anndata, biopython, scanpy, deeptools, scvi-tools, bgpt-paper-search, cobrapy
+
+## Quick Start
+
+```bash
+# Identify data formats in a directory
+node scripts/orchestrator.mjs identify ./data
+
+# Check if a specific skill is available
+node scripts/orchestrator.mjs check scanpy
+
+# Get a workflow template
+node scripts/orchestrator.mjs template single-cell
+
+# Generate demo data for testing
+node ../../scripts/generate_demo_data.mjs
+```
 
 ## Available Tools
 
@@ -59,3 +75,37 @@ Bioinformatics tools are notoriously version-sensitive. Use `manage_bio_environm
 The `bio-expert` does not replace specialized skills like `scanpy`. It acts as the "brain" that knows *when* and *how* to use them together.
 ### 6. Inventory-Aware Execution
 Before proposing a strategy or delegating a task, the `bio-expert` MUST check the internal inventory (referencing `~/clawomics/docs/RESOURCES.md` or a cached version) to identify which specialized skills (e.g., `scanpy`, `deeptools`, `rdkit`) are currently available on the system. If a required skill is missing, suggest alternatives or a manual installation step.
+
+## Pre-built Workflow Templates
+
+The orchestrator includes optimized templates for common analysis types:
+
+### Single-Cell RNA-seq
+```json
+{
+  "name": "Single-Cell Pipeline",
+  "steps": [
+    "QC filtering → Normalization → Batch correction → Clustering → Annotation → Differential expression"
+  ]
+}
+```
+
+### DNA-seq Variant Analysis
+```json
+{
+  "name": "Variant Calling Pipeline", 
+  "steps": [
+    "QC → Alignment → Sorting → Variant calling → Clinical annotation"
+  ]
+}
+```
+
+### RNA-seq Expression
+```json
+{
+  "name": "Expression Analysis",
+  "steps": [
+    "QC → Spliced alignment → Quantification → Differential expression → Literature validation"
+  ]
+}
+```

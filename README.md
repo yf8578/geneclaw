@@ -29,6 +29,16 @@
 
 ---
 
+## 🆕 What's New in v1.1
+
+- **🔧 CLI Interface**: New `clawomics.mjs` CLI for one-command operations
+- **🧪 Demo Data Generator**: `generate_demo_data.mjs` creates test datasets instantly
+- **🧠 Working Orchestrator**: `bio-expert/scripts/orchestrator.mjs` actually executes workflows
+- **📊 Resource Summary**: Auto-generated skill statistics table in RESOURCES.md
+- **📖 Cookbook**: New `docs/COOKBOOK.md` with prompt templates
+
+---
+
 ## 🏗️ Architecture
 
 ClawOmics operates on a "Brain-and-Arms" architecture:
@@ -63,13 +73,31 @@ cd ~/.openclaw/workspace/skills
 git clone https://github.com/yf8578/clawomics.git
 ```
 
-### 2. Initialize Resources
-Run the inventory script to register all 200+ skills with the orchestrator:
+### 2. Quick CLI Setup
+Initialize the environment and generate demo data:
 
 ```bash
 cd clawomics
+chmod +x scripts/*.mjs scripts/*.sh
+
+# Initialize environment
+node scripts/clawomics.mjs setup
+
+# Generate demo data for testing
+node scripts/clawomics.mjs demo
+
+# Identify data formats
+node scripts/clawomics.mjs identify demo_data
+```
+
+### 3. Initialize Resources
+Update the skill inventory to register all 200+ skills:
+
+```bash
 node scripts/inventory_skills.mjs
 ```
+
+This generates `docs/RESOURCES.md` with a summary table of all available tools.
 
 ### 3. Usage Example
 Refer to our **[📖 Cookbook](./docs/COOKBOOK.md)** for detailed prompt examples and scenarios.
