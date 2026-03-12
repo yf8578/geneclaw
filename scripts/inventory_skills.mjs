@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 
-const SKILLS_DIR = path.join(os.homedir(), '.openclaw', 'workspace', 'skills');
+const SKILLS_DIR = path.join(os.homedir(), 'geneclaw', 'skills');
 const OUTPUT_FILE = path.join(os.homedir(), 'geneclaw', 'docs', 'RESOURCES.md');
 
 const CATEGORIES = {

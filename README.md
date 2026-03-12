@@ -10,7 +10,7 @@
 - **Automatic Environment Management**: Built-in support for `Conda` and `Mamba` to handle version-sensitive bioinformatics dependencies automatically.
 - **AI-Driven Biological Interpretation**: Go beyond statistics. Geneclaw translates technical outputs (PCA, DEG tables, mapping logs) into actionable biological narratives.
 - **Data-First Discovery**: Automatically identifies raw data types and recommends the optimal tools and skills for the task.
-- **Seamless Integration**: Natively works with specialized skills like `scanpy`, `biopython`, `deeptools`, and `scvi-tools`.
+- **Integrated Skill Suite**: Includes over 180+ specialized skills for scientific research, from database querying to advanced sequence analysis.
 
 ---
 
@@ -25,51 +25,37 @@ Geneclaw is designed to be used as a set of specialized skills within an OpenCla
 ### Setup
 1. Clone this repository into your OpenClaw skills directory:
    ```bash
-   git clone https://github.com/your-repo/geneclaw.git
+   git clone https://github.com/yf8578/geneclaw.git
    ```
 2. OpenClaw will automatically detect the `skills/bio-expert` orchestrator and its associated tools.
 
 ---
 
-## 📖 Usage Examples
+## 📂 Project Structure
 
-### 1. Identify and Analyze Raw Data
-Simply point Geneclaw to a directory, and it will identify the data types and suggest a starting point.
-> "Analyze the files in `./data/raw_seq` and tell me what I should do next."
-
-### 2. Execute a Multi-Step Workflow
-Geneclaw can plan and execute complex pipelines, ensuring each step validates before proceeding.
-> "Run a standard QC and mapping pipeline on the FASTQ files in `./data`, using the GRCh38 reference."
-
-### 3. Interpret Complex Results
-Get expert-level summaries of your analysis outputs.
-> "Interpret the differential expression results in `./results/deg_table.csv` in the context of human inflammatory response."
+- `skills/bio-expert`: The Master Orchestrator skill.
+- `skills/*`: A comprehensive collection of integrated scientific skills.
+- `docs/RESOURCES.md`: A dynamically generated inventory of all available skills.
+- `scripts/inventory_skills.mjs`: Utility script to scan and categorize skills.
 
 ---
 
-## 🗺️ Roadmap
+## 🙏 Credits & Attributions
 
-- [ ] **Cloud-Native Support**: Integration with AWS Batch and GCP Life Sciences for massive-scale compute.
-- [ ] **Expanded Multi-Omics**: Dedicated agents for Proteomics, Metabolomics, and Structural Biology (AlphaFold integration).
-- [ ] **Interactive Dashboards**: Automated generation of interactive HTML5 reports and visualization dashboards.
-- [ ] **Enhanced Literature Grounding**: Tighter integration with PubMed and bioRxiv for real-time hypothesis validation.
+Geneclaw integrates and builds upon the excellent work of the following projects:
 
----
+- **[Claude Scientific Skills](https://github.com/K-Dense-AI/claude-scientific-skills)** by K-Dense-AI: Provided the foundation for 170+ scientific research skills.
+- **[BioClaw](https://github.com/Runchuan-BU/BioClaw)** by Runchuan-BU: Provided specialized bioinformatics tools and inspirations for the initial orchestration logic.
 
-## 🤝 Contributing
-
-We welcome contributions from bioinformaticians, software engineers, and researchers! 
-
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git checkout origin feature/AmazingFeature`).
-5. Open a Pull Request.
-
-Please ensure all new tools include a corresponding entry in `SKILL.md` and follow the project's coding standards.
+We are deeply grateful to the maintainers and contributors of these repositories for their contributions to the open-source AI and science community.
 
 ---
 
 ## 📄 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Geneclaw is distributed under the **MIT License**. 
+
+Individual skills integrated from external sources may carry their own licenses (mostly MIT). Please refer to the `SKILL.md` files within each skill directory for specific license information where applicable.
+
+---
+*Created by [yf8578](https://github.com/yf8578)* 🧬🦞

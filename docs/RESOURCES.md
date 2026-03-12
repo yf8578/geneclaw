@@ -10,6 +10,9 @@ This inventory lists all compatible OpenClaw skills available on the host system
 ### Denario (`denario`)
 # Denario
 
+### DHDNA Profiler — Cognitive Pattern Extraction (`dhdna-profiler`)
+# DHDNA Profiler — Cognitive Pattern Extraction
+
 ### DNAnexus Integration (`dnanexus-integration`)
 # DNAnexus Integration
 
@@ -30,6 +33,15 @@ This inventory lists all compatible OpenClaw skills available on the host system
 
 ### Pysam (`pysam`)
 # Pysam
+
+### ClinVar Clinical Variant Database (`query-clinvar`)
+# ClinVar Clinical Variant Database
+
+### Ensembl REST API Query (`query-ensembl`)
+# Ensembl REST API Query
+
+### scVelo — RNA Velocity Analysis (`scvelo`)
+# scVelo — RNA Velocity Analysis
 
 ### TileDB-VCF (`tiledbvcf`)
 # TileDB-VCF
@@ -101,6 +113,30 @@ This inventory lists all compatible OpenClaw skills available on the host system
 ### PubMed Database (`pubmed-database`)
 # PubMed Database
 
+### PubMed Search (`pubmed-search`)
+# PubMed Search
+
+### AlphaFold Structure Database Query (`query-alphafold`)
+# AlphaFold Structure Database Query
+
+### KEGG Pathway Database Query (`query-kegg`)
+# KEGG Pathway Database Query
+
+### OpenTargets Platform Query (`query-opentarget`)
+# OpenTargets Platform Query
+
+### RCSB PDB Database Query (`query-pdb`)
+# RCSB PDB Database Query
+
+### Reactome Pathway Database (`query-reactome`)
+# Reactome Pathway Database
+
+### STRING Protein Interaction Database (`query-stringdb`)
+# STRING Protein Interaction Database
+
+### UniProt Protein Database Query (`query-uniprot`)
+# UniProt Protein Database Query
+
 ### Reactome Database (`reactome-database`)
 # Reactome Database
 
@@ -139,6 +175,9 @@ This inventory lists all compatible OpenClaw skills available on the host system
 ### Metabolomics Workbench Database (`metabolomics-workbench-database`)
 # Metabolomics Workbench Database
 
+### Molecular Dynamics (`molecular-dynamics`)
+# Molecular Dynamics
+
 ### Molfeat - Molecular Featurization Hub (`molfeat`)
 # Molfeat - Molecular Featurization Hub
 
@@ -156,14 +195,14 @@ This inventory lists all compatible OpenClaw skills available on the host system
 
 ## General Scientific Computing & Stats
 
+### Add Parallel AI Integration (`add-parallel`)
+Adds Parallel AI MCP integration to BioClaw for advanced web research capabilities.
+
 ### Astropy (`astropy`)
 # Astropy
 
 ### Benchling Integration (`benchling-integration`)
 # Benchling Integration
-
-### Citation Grabber (`citation-grabber`)
-# Citation Grabber
 
 ### Citation Management (`citation-management`)
 # Citation Management
@@ -179,6 +218,9 @@ This inventory lists all compatible OpenClaw skills available on the host system
 
 ### Get Available Resources (`get-available-resources`)
 # Get Available Resources
+
+### Ginkgo Cloud Lab (`ginkgo-cloud-lab`)
+# Ginkgo Cloud Lab
 
 ### Histolab (`histolab`)
 # Histolab
@@ -270,7 +312,7 @@ This inventory lists all compatible OpenClaw skills available on the host system
 ### TimesFM Forecasting (`timesfm-forecasting`)
 # TimesFM Forecasting
 
-### PyTorch Geometric (PyG) (`torch_geometric`)
+### PyTorch Geometric (PyG) (`torch-geometric`)
 # PyTorch Geometric (PyG)
 
 ### Transformers (`transformers`)
@@ -284,11 +326,20 @@ This inventory lists all compatible OpenClaw skills available on the host system
 ### Adaptyv (`adaptyv`)
 # Adaptyv
 
+### Add Gmail Integration (`add-gmail`)
+# Add Gmail Integration
+
+### Add Telegram Channel (`add-telegram`)
+# Add Telegram Channel
+
+### Add Agent Swarm to Telegram (`add-telegram-swarm`)
+# Add Agent Swarm to Telegram
+
+### Add Voice Message Transcription (`add-voice-transcription`)
+# Add Voice Message Transcription
+
 ### Aeon Time Series Machine Learning (`aeon`)
 # Aeon Time Series Machine Learning
-
-### Browser Automation with agent-browser (`agent-browser`)
-# Browser Automation with agent-browser
 
 ### Alpha Vantage — Financial Market Data (`alpha-vantage`)
 # Alpha Vantage — Financial Market Data
@@ -296,14 +347,23 @@ This inventory lists all compatible OpenClaw skills available on the host system
 ### Arboreto (`arboreto`)
 # Arboreto
 
-### Auto-Updater Skill (`auto-updater`)
-# Auto-Updater Skill
-
-### BGI Software Writing (`bgi-software-writing`)
-# BGI Software Writing
+### arXiv Database (`arxiv-database`)
+# arXiv Database
 
 ### BGPT Paper Search (`bgpt-paper-search`)
 # BGPT Paper Search
+
+### BindingDB Database (`bindingdb-database`)
+# BindingDB Database
+
+### bio-expert (`bio-expert`)
+The Master Orchestrator for Geneclaw, designed to coordinate complex bioinformatics workflows, manage environments, and provide AI-driven interpretation of results across diverse biological data types.
+
+### BLAST Search (`blast-search`)
+# BLAST Search
+
+### cBioPortal Database (`cbioportal-database`)
+# cBioPortal Database
 
 ### Cirq - Quantum Computing with Python (`cirq`)
 # Cirq - Quantum Computing with Python
@@ -311,20 +371,32 @@ This inventory lists all compatible OpenClaw skills available on the host system
 ### ClinPGx Database (`clinpgx-database`)
 # ClinPGx Database
 
+### Consciousness Council (`consciousness-council`)
+# Consciousness Council
+
+### Convert to Docker (`convert-to-docker`)
+# Convert to Docker
+
 ### COSMIC Database (`cosmic-database`)
 # COSMIC Database
 
-### Data Analysis Workflow (`data-analysis-workflow`)
-# Data Analysis Workflow
+### BioClaw Customization (`customize`)
+# BioClaw Customization
 
 ### Data Commons Client (`datacommons-client`)
 # Data Commons Client
 
+### BioClaw Container Debugging (`debug`)
+# BioClaw Container Debugging
+
+### DepMap — Cancer Dependency Map (`depmap`)
+# DepMap — Cancer Dependency Map
+
+### DOCX creation, editing, and analysis (`docx`)
+# DOCX creation, editing, and analysis
+
 ### edgartools — SEC EDGAR Data (`edgartools`)
 # edgartools — SEC EDGAR Data
-
-### Elite Longterm Memory 🧠 (`elite-longterm-memory`)
-# Elite Longterm Memory 🧠
 
 ### ESM: Evolutionary Scale Modeling (`esm`)
 # ESM: Evolutionary Scale Modeling
@@ -335,17 +407,11 @@ This inventory lists all compatible OpenClaw skills available on the host system
 ### Exploratory Data Analysis (`exploratory-data-analysis`)
 # Exploratory Data Analysis
 
-### Find Skills (`find-skills`)
-# Find Skills
-
 ### FlowIO: Flow Cytometry Standard File Handler (`flowio`)
 # FlowIO: Flow Cytometry Standard File Handler
 
 ### FRED Economic Data Access (`fred-economic-data`)
 # FRED Economic Data Access
-
-### frontend-design (`frontend-design`)
-This skill guides creation of distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics. Implement real working code with exceptional attention to aesthetic details and creative choices.
 
 ### Gene Database (`gene-database`)
 # Gene Database
@@ -356,8 +422,17 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 ### GEO Database (`geo-database`)
 # GEO Database
 
-### gog (`gog`)
-# gog
+### GeoMaster (`geomaster`)
+# GeoMaster
+
+### Glycoengineering (`glycoengineering`)
+# Glycoengineering
+
+### gnomAD Database (`gnomad-database`)
+# gnomAD Database
+
+### GTEx Database (`gtex-database`)
+# GTEx Database
 
 ### OFR Hedge Fund Monitor API (`hedgefundmonitor`)
 # OFR Hedge Fund Monitor API
@@ -371,11 +446,14 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 ### Infographics (`infographics`)
 # Infographics
 
-### Interface Design (`interface-design`)
-# Interface Design
+### InterPro Database (`interpro-database`)
+# InterPro Database
 
 ### ISO 13485 Certification Documentation Assistant (`iso-13485-certification`)
 # ISO 13485 Certification Documentation Assistant
+
+### JASPAR Database (`jaspar-database`)
+# JASPAR Database
 
 ### LaminDB (`lamindb`)
 # LaminDB
@@ -395,6 +473,9 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 ### Modal (`modal`)
 # Modal
 
+### Monarch Initiative Database (`monarch-database`)
+# Monarch Initiative Database
+
 ### NetworkX (`networkx`)
 # NetworkX
 
@@ -403,9 +484,6 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 
 ### OMERO Integration (`omero-integration`)
 # OMERO Integration
-
-### Ontology (`ontology`)
-# Ontology
 
 ### Open Notebook (`open-notebook`)
 # Open Notebook
@@ -416,8 +494,14 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 ### Paper2All: Academic Paper Transformation Pipeline (`paper-2-web`)
 # Paper2All: Academic Paper Transformation Pipeline
 
+### Parallel Web Systems API (`parallel-web`)
+# Parallel Web Systems API
+
 ### PathML (`pathml`)
 # PathML
+
+### PDF Processing Guide (`pdf`)
+# PDF Processing Guide
 
 ### PennyLane (`pennylane`)
 # PennyLane
@@ -425,8 +509,14 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 ### Perplexity Search (`perplexity-search`)
 # Perplexity Search
 
-### Proactive Agent 🦞 (`proactive-agent`)
-# Proactive Agent 🦞
+### Phylogenetics (`phylogenetics`)
+# Phylogenetics
+
+### PPTX Skill (`pptx`)
+# PPTX Skill
+
+### PrimeKG Knowledge Graph Skill (`primekg`)
+# PrimeKG Knowledge Graph Skill
 
 ### PufferLib - High-Performance Reinforcement Learning (`pufferlib`)
 # PufferLib - High-Performance Reinforcement Learning
@@ -461,6 +551,12 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 ### Qiskit (`qiskit`)
 # Qiskit
 
+### NCBI GEO Database Query (`query-geo`)
+# NCBI GEO Database Query
+
+### InterPro Protein Domain Database (`query-interpro`)
+# InterPro Protein Domain Database
+
 ### QuTiP: Quantum Toolbox in Python (`qutip`)
 # QuTiP: Quantum Toolbox in Python
 
@@ -473,8 +569,11 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 ### scikit-survival: Survival Analysis in Python (`scikit-survival`)
 # scikit-survival: Survival Analysis in Python
 
-### Self-Improvement Skill (`self-improving-agent`)
-# Self-Improvement Skill
+### Sequence Analysis (`sequence-analysis`)
+# Sequence Analysis
+
+### BioClaw Setup (`setup`)
+# BioClaw Setup
 
 ### SHAP (SHapley Additive exPlanations) (`shap`)
 # SHAP (SHapley Additive exPlanations)
@@ -482,23 +581,14 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 ### SimPy - Discrete-Event Simulation (`simpy`)
 # SimPy - Discrete-Event Simulation
 
-### Skill Vetter 🔒 (`skill-vetter`)
-# Skill Vetter 🔒
-
 ### Stable Baselines3 (`stable-baselines3`)
 # Stable Baselines3
 
 ### Statistical Analysis (`statistical-analysis`)
 # Statistical Analysis
 
-### Tavily Search (`tavily-search`)
-# Tavily Search
-
 ### Treatment Plan Writing (`treatment-plans`)
 # Treatment Plan Writing
-
-### UI/UX Pro Max - Design Intelligence (`ui-ux-pro-max`)
-# UI/UX Pro Max - Design Intelligence
 
 ### UMAP-Learn (`umap-learn`)
 # UMAP-Learn
@@ -512,8 +602,11 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 ### Venue Templates (`venue-templates`)
 # Venue Templates
 
-### Web Search Plus (`web-search-plus`)
-# Web Search Plus
+### What-If Oracle — Possibility Space Explorer (`what-if-oracle`)
+# What-If Oracle — Possibility Space Explorer
+
+### X (Twitter) Integration (`x-integration`)
+# X (Twitter) Integration
 
 ### Requirements for Outputs (`xlsx`)
 # Requirements for Outputs
