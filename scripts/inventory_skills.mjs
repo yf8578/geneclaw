@@ -43,7 +43,11 @@ function scanSkills() {
 
                 // Get description (the first paragraph after name/metadata)
                 let description = '';
-                const descMatch = content.match(/^(?:#.*|---\s*[\s\S]*?---\s*|(?:\s*\n)+)([\s\S]+?)(?:\n\s*\n|##|$)/);
+                // Remove H1 and metadata blocks to find description
+                let cleanContent = content.replace(/^#\s+.+$/m, '')
+                                         .replace(/^---\s*[\s\S]*?---\s*$/m, '')
+                                         .trim();
+                const descMatch = cleanContent.match(/^([\s\S]+?)(?:\n\s*\n|##|$)/);
                 if (descMatch) {
                     description = descMatch[1].replace(/[\n\r]+/g, ' ').trim();
                 }

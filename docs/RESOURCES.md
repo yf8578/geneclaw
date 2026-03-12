@@ -4,615 +4,615 @@ This inventory lists all compatible OpenClaw skills available on the host system
 
 ## NGS & Genomics
 
+### Add Voice Message Transcription (`add-voice-transcription`)
+This skill adds automatic voice message transcription using OpenAI's Whisper API. When users send voice notes in WhatsApp, they'll be transcribed and the agent can read and respond to the content.
+
 ### deepTools: NGS Data Analysis Toolkit (`deeptools`)
-# deepTools: NGS Data Analysis Toolkit
+## Overview
 
 ### Denario (`denario`)
-# Denario
+## Overview
 
 ### DHDNA Profiler — Cognitive Pattern Extraction (`dhdna-profiler`)
-# DHDNA Profiler — Cognitive Pattern Extraction
+A structured system for extracting the cognitive fingerprint of any text's author. Based on the Digital Human DNA (DHDNA) framework — the theory that every mind has a unique signature pattern expressed through how it reasons, decides, values, and communicates.
 
 ### DNAnexus Integration (`dnanexus-integration`)
-# DNAnexus Integration
+## Overview
 
 ### ENA Database (`ena-database`)
-# ENA Database
+## Overview
 
 ### Ensembl Database (`ensembl-database`)
-# Ensembl Database
+## Overview
 
 ### Geniml: Genomic Interval Machine Learning (`geniml`)
-# Geniml: Genomic Interval Machine Learning
+## Overview
+
+### GeoPandas (`geopandas`)
+GeoPandas extends pandas to enable spatial operations on geometric types. It combines the capabilities of pandas and shapely for geospatial data analysis.
 
 ### Gtars: Genomic Tools and Algorithms in Rust (`gtars`)
-# Gtars: Genomic Tools and Algorithms in Rust
+## Overview
+
+### MATLAB/Octave Scientific Computing (`matlab`)
+MATLAB is a numerical computing environment optimized for matrix operations and scientific computing. GNU Octave is a free, open-source alternative with high MATLAB compatibility.
 
 ### OpenAlex Database (`openalex-database`)
-# OpenAlex Database
+## Overview
 
 ### Pysam (`pysam`)
-# Pysam
+## Overview
 
 ### ClinVar Clinical Variant Database (`query-clinvar`)
-# ClinVar Clinical Variant Database
+Query NCBI ClinVar for clinical significance of genetic variants.
 
 ### Ensembl REST API Query (`query-ensembl`)
-# Ensembl REST API Query
+Query the Ensembl REST API for genomic annotations, sequences, and variants.
 
 ### scVelo — RNA Velocity Analysis (`scvelo`)
-# scVelo — RNA Velocity Analysis
+## Overview
 
 ### TileDB-VCF (`tiledbvcf`)
-# TileDB-VCF
+## Overview
+
+### What-If Oracle — Possibility Space Explorer (`what-if-oracle`)
+A structured system for exploring uncertain futures through rigorous multi-branch scenario analysis. Instead of one prediction, the Oracle maps the full **possibility space** — branching timelines where each path has its own logic, probability, and consequences.
 
 ## Single-Cell & Spatial
 
 ### AnnData (`anndata`)
-# AnnData
+## Overview
 
 ### CZ CELLxGENE Census (`cellxgene-census`)
-# CZ CELLxGENE Census
+## Overview
+
+### GeoMaster (`geomaster`)
+Comprehensive geospatial science skill covering GIS, remote sensing, spatial analysis, and ML for Earth observation across 70+ topics with 500+ code examples in 8 programming languages.
 
 ### Neuropixels Data Analysis (`neuropixels-analysis`)
-# Neuropixels Data Analysis
+## Overview
 
 ### Scanpy: Single-Cell Analysis (`scanpy`)
-# Scanpy: Single-Cell Analysis
+## Overview
 
 ### scvi-tools (`scvi-tools`)
-# scvi-tools
+## Overview
 
 ## Biological Databases & Knowledge
 
 ### AlphaFold Database (`alphafold-database`)
-# AlphaFold Database
+## Overview
 
 ### bioRxiv Database (`biorxiv-database`)
-# bioRxiv Database
+## Overview
 
 ### BioServices (`bioservices`)
-# BioServices
+## Overview
 
 ### ChEMBL Database (`chembl-database`)
-# ChEMBL Database
+## Overview
 
 ### Clinical Decision Support Documents (`clinical-decision-support`)
-# Clinical Decision Support Documents
+## Description
 
 ### Clinical Report Writing (`clinical-reports`)
-# Clinical Report Writing
+## Overview
 
 ### ClinicalTrials.gov Database (`clinicaltrials-database`)
-# ClinicalTrials.gov Database
+## Overview
 
 ### ClinVar Database (`clinvar-database`)
-# ClinVar Database
+## Overview
 
 ### DrugBank Database (`drugbank-database`)
-# DrugBank Database
+## Overview
 
 ### FDA Database Access (`fda-database`)
-# FDA Database Access
+## Overview
 
 ### gget (`gget`)
-# gget
+## Overview
 
 ### GWAS Catalog Database (`gwas-database`)
-# GWAS Catalog Database
+## Overview
 
 ### KEGG Database (`kegg-database`)
-# KEGG Database
+## Overview
 
 ### PDB Database (`pdb-database`)
-# PDB Database
+## Overview
 
 ### PubChem Database (`pubchem-database`)
-# PubChem Database
+## Overview
 
 ### PubMed Database (`pubmed-database`)
-# PubMed Database
+## Overview
 
 ### PubMed Search (`pubmed-search`)
-# PubMed Search
+Search NCBI PubMed for scientific literature using BioPython's Entrez module.
 
 ### AlphaFold Structure Database Query (`query-alphafold`)
-# AlphaFold Structure Database Query
+Query the AlphaFold EBI API for predicted protein structures.
 
 ### KEGG Pathway Database Query (`query-kegg`)
-# KEGG Pathway Database Query
+Query the KEGG REST API for biological pathways, genes, and compounds.
 
 ### OpenTargets Platform Query (`query-opentarget`)
-# OpenTargets Platform Query
+Query the OpenTargets Platform GraphQL API for drug-target-disease associations.
 
 ### RCSB PDB Database Query (`query-pdb`)
-# RCSB PDB Database Query
+Query the RCSB Protein Data Bank for experimental 3D structures.
 
 ### Reactome Pathway Database (`query-reactome`)
-# Reactome Pathway Database
+Query the Reactome ContentService and AnalysisService APIs.
 
 ### STRING Protein Interaction Database (`query-stringdb`)
-# STRING Protein Interaction Database
+Query the STRING API for protein-protein interaction networks.
 
 ### UniProt Protein Database Query (`query-uniprot`)
-# UniProt Protein Database Query
+Query the UniProt REST API for protein information.
 
 ### Reactome Database (`reactome-database`)
-# Reactome Database
+## Overview
 
 ### STRING Database (`string-database`)
-# STRING Database
+## Overview
 
 ### UniProt Database (`uniprot-database`)
-# UniProt Database
+## Overview
 
 ## Cheminformatics & Molecular Modeling
 
 ### Biopython: Computational Molecular Biology in Python (`biopython`)
-# Biopython: Computational Molecular Biology in Python
+## Overview
 
 ### BRENDA Database (`brenda-database`)
-# BRENDA Database
+## Overview
 
 ### COBRApy - Constraint-Based Reconstruction and Analysis (`cobrapy`)
-# COBRApy - Constraint-Based Reconstruction and Analysis
+## Overview
 
 ### Datamol Cheminformatics Skill (`datamol`)
-# Datamol Cheminformatics Skill
+## Overview
 
 ### DeepChem (`deepchem`)
-# DeepChem
+## Overview
 
 ### DiffDock: Molecular Docking with Diffusion Models (`diffdock`)
-# DiffDock: Molecular Docking with Diffusion Models
+## Overview
 
 ### HMDB Database (`hmdb-database`)
-# HMDB Database
+## Overview
 
 ### Medchem (`medchem`)
-# Medchem
+## Overview
 
 ### Metabolomics Workbench Database (`metabolomics-workbench-database`)
-# Metabolomics Workbench Database
+## Overview
 
 ### Molecular Dynamics (`molecular-dynamics`)
-# Molecular Dynamics
+## Overview
 
 ### Molfeat - Molecular Featurization Hub (`molfeat`)
-# Molfeat - Molecular Featurization Hub
+## Overview
 
 ### RDKit Cheminformatics Toolkit (`rdkit`)
-# RDKit Cheminformatics Toolkit
+## Overview
 
 ### Rowan: Cloud-Based Quantum Chemistry Platform (`rowan`)
-# Rowan: Cloud-Based Quantum Chemistry Platform
+## Overview
 
 ### TorchDrug (`torchdrug`)
-# TorchDrug
+## Overview
 
 ### ZINC Database (`zinc-database`)
-# ZINC Database
+## Overview
 
 ## General Scientific Computing & Stats
+
+### Adaptyv (`adaptyv`)
+Adaptyv is a cloud laboratory platform that provides automated protein testing and validation services. Submit protein sequences via API or web interface and receive experimental results in approximately 21 days.
 
 ### Add Parallel AI Integration (`add-parallel`)
 Adds Parallel AI MCP integration to BioClaw for advanced web research capabilities.
 
 ### Astropy (`astropy`)
-# Astropy
+## Overview
 
 ### Benchling Integration (`benchling-integration`)
-# Benchling Integration
+## Overview
 
 ### Citation Management (`citation-management`)
-# Citation Management
+## Overview
 
 ### Dask (`dask`)
-# Dask
+## Overview
 
 ### FluidSim (`fluidsim`)
-# FluidSim
-
-### GeoPandas (`geopandas`)
-# GeoPandas
+## Overview
 
 ### Get Available Resources (`get-available-resources`)
-# Get Available Resources
+## Overview
 
 ### Ginkgo Cloud Lab (`ginkgo-cloud-lab`)
-# Ginkgo Cloud Lab
+## Overview
+
+### OFR Hedge Fund Monitor API (`hedgefundmonitor`)
+Free, open REST API from the U.S. Office of Financial Research (OFR) providing aggregated hedge fund time series data. No API key or registration required.
 
 ### Histolab (`histolab`)
-# Histolab
+## Overview
 
 ### Scientific Hypothesis Generation (`hypothesis-generation`)
-# Scientific Hypothesis Generation
+## Overview
 
 ### LabArchives Integration (`labarchive-integration`)
-# LabArchives Integration
+## Overview
 
 ### LaTeX Research Posters (`latex-posters`)
-# LaTeX Research Posters
+## Overview
 
 ### Literature Review (`literature-review`)
-# Literature Review
+## Overview
 
 ### Market Research Reports (`market-research-reports`)
-# Market Research Reports
-
-### MATLAB/Octave Scientific Computing (`matlab`)
-# MATLAB/Octave Scientific Computing
+## Overview
 
 ### Matplotlib (`matplotlib`)
-# Matplotlib
+## Overview
 
 ### NeuroKit2 (`neurokit2`)
-# NeuroKit2
+## Overview
 
 ### Opentrons Integration (`opentrons-integration`)
-# Opentrons Integration
+## Overview
 
 ### Scientific Critical Evaluation and Peer Review (`peer-review`)
-# Scientific Critical Evaluation and Peer Review
+## Overview
 
 ### Plotly (`plotly`)
-# Plotly
+Python graphing library for creating interactive, publication-quality visualizations with 40+ chart types.
 
 ### Polars (`polars`)
-# Polars
+## Overview
 
 ### PPTX Research Posters (HTML-Based) (`pptx-posters`)
-# PPTX Research Posters (HTML-Based)
+## Overview
 
 ### Protocols.io Integration (`protocolsio-integration`)
-# Protocols.io Integration
+## Overview
 
 ### PyLabRobot (`pylabrobot`)
-# PyLabRobot
+## Overview
 
 ### PyTorch Lightning (`pytorch-lightning`)
-# PyTorch Lightning
+## Overview
+
+### Pyzotero (`pyzotero`)
+Pyzotero is a Python wrapper for the [Zotero API v3](https://www.zotero.org/support/dev/web_api/v3/start). Use it to programmatically manage Zotero libraries: read items and collections, create and update references, upload attachments, manage tags, and export citations.
 
 ### Research Grant Writing (`research-grants`)
-# Research Grant Writing
+## Overview
 
 ### Research Information Lookup (`research-lookup`)
-# Research Information Lookup
+## Overview
 
 ### Scientific Brainstorming (`scientific-brainstorming`)
-# Scientific Brainstorming
+## Overview
 
 ### Scientific Critical Thinking (`scientific-critical-thinking`)
-# Scientific Critical Thinking
+## Overview
 
 ### Scientific Schematics and Diagrams (`scientific-schematics`)
-# Scientific Schematics and Diagrams
+## Overview
 
 ### Scientific Slides (`scientific-slides`)
-# Scientific Slides
+## Overview
 
 ### Scientific Visualization (`scientific-visualization`)
-# Scientific Visualization
+## Overview
 
 ### Scientific Writing (`scientific-writing`)
-# Scientific Writing
+## Overview
 
 ### Scikit-learn (`scikit-learn`)
-# Scikit-learn
+## Overview
 
 ### Seaborn Statistical Visualization (`seaborn`)
-# Seaborn Statistical Visualization
+## Overview
 
 ### Statsmodels: Statistical Modeling and Econometrics (`statsmodels`)
-# Statsmodels: Statistical Modeling and Econometrics
+## Overview
 
 ### SymPy - Symbolic Mathematics in Python (`sympy`)
-# SymPy - Symbolic Mathematics in Python
+## Overview
 
 ### TimesFM Forecasting (`timesfm-forecasting`)
-# TimesFM Forecasting
+## Overview
 
 ### PyTorch Geometric (PyG) (`torch-geometric`)
-# PyTorch Geometric (PyG)
+## Overview
 
 ### Transformers (`transformers`)
-# Transformers
+## Overview
 
 ### Vaex (`vaex`)
-# Vaex
+## Overview
 
 ## Other Tools
 
-### Adaptyv (`adaptyv`)
-# Adaptyv
-
 ### Add Gmail Integration (`add-gmail`)
-# Add Gmail Integration
+This skill adds Gmail capabilities to BioClaw. It can be configured in two modes:
 
 ### Add Telegram Channel (`add-telegram`)
-# Add Telegram Channel
+This skill adds Telegram support to BioClaw. Users can choose to:
 
 ### Add Agent Swarm to Telegram (`add-telegram-swarm`)
-# Add Agent Swarm to Telegram
-
-### Add Voice Message Transcription (`add-voice-transcription`)
-# Add Voice Message Transcription
+This skill adds Agent Teams (Swarm) support to an existing Telegram channel. Each subagent in a team gets its own bot identity in the Telegram group, so users can visually distinguish which agent is speaking.
 
 ### Aeon Time Series Machine Learning (`aeon`)
-# Aeon Time Series Machine Learning
+## Overview
 
 ### Alpha Vantage — Financial Market Data (`alpha-vantage`)
-# Alpha Vantage — Financial Market Data
+Access 20+ years of global financial data: equities, options, forex, crypto, commodities, economic indicators, and 50+ technical indicators.
 
 ### Arboreto (`arboreto`)
-# Arboreto
+## Overview
 
 ### arXiv Database (`arxiv-database`)
-# arXiv Database
+## Overview
 
 ### BGPT Paper Search (`bgpt-paper-search`)
-# BGPT Paper Search
+## Overview
 
 ### BindingDB Database (`bindingdb-database`)
-# BindingDB Database
+## Overview
 
 ### bio-expert (`bio-expert`)
 The Master Orchestrator for ClawOmics, designed to coordinate complex bioinformatics workflows, manage environments, and provide AI-driven interpretation of results across diverse biological data types.
 
 ### BLAST Search (`blast-search`)
-# BLAST Search
+Run NCBI BLAST+ searches inside the BioClaw container.
 
 ### cBioPortal Database (`cbioportal-database`)
-# cBioPortal Database
+## Overview
 
 ### Cirq - Quantum Computing with Python (`cirq`)
-# Cirq - Quantum Computing with Python
+Cirq is Google Quantum AI's open-source framework for designing, simulating, and running quantum circuits on quantum computers and simulators.
 
 ### ClinPGx Database (`clinpgx-database`)
-# ClinPGx Database
+## Overview
 
 ### Consciousness Council (`consciousness-council`)
-# Consciousness Council
+A structured multi-perspective deliberation system that generates genuine cognitive diversity on any question. Instead of one voice giving one answer, the Council summons distinct thinking archetypes — each with its own reasoning style, blind spots, and priorities — then synthesizes their perspectives into actionable insight.
 
 ### Convert to Docker (`convert-to-docker`)
-# Convert to Docker
+This skill migrates BioClaw from Apple Container (macOS-only) to Docker for cross-platform support (macOS and Linux).
 
 ### COSMIC Database (`cosmic-database`)
-# COSMIC Database
+## Overview
 
 ### BioClaw Customization (`customize`)
-# BioClaw Customization
+This skill helps users add capabilities or modify behavior. Use AskUserQuestion to understand what they want before making changes.
 
 ### Data Commons Client (`datacommons-client`)
-# Data Commons Client
+## Overview
 
 ### BioClaw Container Debugging (`debug`)
-# BioClaw Container Debugging
+This guide covers debugging the containerized agent execution system.
 
 ### DepMap — Cancer Dependency Map (`depmap`)
-# DepMap — Cancer Dependency Map
+## Overview
 
 ### DOCX creation, editing, and analysis (`docx`)
-# DOCX creation, editing, and analysis
+## Overview
 
 ### edgartools — SEC EDGAR Data (`edgartools`)
-# edgartools — SEC EDGAR Data
+Python library for accessing all SEC filings since 1994 with structured data extraction.
 
 ### ESM: Evolutionary Scale Modeling (`esm`)
-# ESM: Evolutionary Scale Modeling
+## Overview
 
 ### ETE Toolkit Skill (`etetoolkit`)
-# ETE Toolkit Skill
+## Overview
 
 ### Exploratory Data Analysis (`exploratory-data-analysis`)
-# Exploratory Data Analysis
+## Overview
 
 ### FlowIO: Flow Cytometry Standard File Handler (`flowio`)
-# FlowIO: Flow Cytometry Standard File Handler
+## Overview
 
 ### FRED Economic Data Access (`fred-economic-data`)
-# FRED Economic Data Access
+## Overview
 
 ### Gene Database (`gene-database`)
-# Gene Database
+## Overview
 
 ### Generate Image (`generate-image`)
-# Generate Image
+Generate and edit high-quality images using OpenRouter's image generation models including FLUX.2 Pro and Gemini 3.1 Flash Image Preview.
 
 ### GEO Database (`geo-database`)
-# GEO Database
-
-### GeoMaster (`geomaster`)
-# GeoMaster
+## Overview
 
 ### Glycoengineering (`glycoengineering`)
-# Glycoengineering
+## Overview
 
 ### gnomAD Database (`gnomad-database`)
-# gnomAD Database
+## Overview
 
 ### GTEx Database (`gtex-database`)
-# GTEx Database
-
-### OFR Hedge Fund Monitor API (`hedgefundmonitor`)
-# OFR Hedge Fund Monitor API
+## Overview
 
 ### Hypogenic (`hypogenic`)
-# Hypogenic
+## Overview
 
 ### Imaging Data Commons (`imaging-data-commons`)
-# Imaging Data Commons
+## Overview
 
 ### Infographics (`infographics`)
-# Infographics
+## Overview
 
 ### InterPro Database (`interpro-database`)
-# InterPro Database
+## Overview
 
 ### ISO 13485 Certification Documentation Assistant (`iso-13485-certification`)
-# ISO 13485 Certification Documentation Assistant
+## Overview
 
 ### JASPAR Database (`jaspar-database`)
-# JASPAR Database
+## Overview
 
 ### LaminDB (`lamindb`)
-# LaminDB
+## Overview
 
 ### LatchBio Integration (`latchbio-integration`)
-# LatchBio Integration
+## Overview
 
 ### Markdown and Mermaid Writing (`markdown-mermaid-writing`)
-# Markdown and Mermaid Writing
+## Overview
 
 ### MarkItDown - File to Markdown Conversion (`markitdown`)
-# MarkItDown - File to Markdown Conversion
+## Overview
 
 ### Matchms (`matchms`)
-# Matchms
+## Overview
 
 ### Modal (`modal`)
-# Modal
+## Overview
 
 ### Monarch Initiative Database (`monarch-database`)
-# Monarch Initiative Database
+## Overview
 
 ### NetworkX (`networkx`)
-# NetworkX
+## Overview
 
 ### Offer K-Dense Web (`offer-k-dense-web`)
-# Offer K-Dense Web
+## Overview
 
 ### OMERO Integration (`omero-integration`)
-# OMERO Integration
+## Overview
 
 ### Open Notebook (`open-notebook`)
-# Open Notebook
+## Overview
 
 ### Open Targets Database (`opentargets-database`)
-# Open Targets Database
+## Overview
 
 ### Paper2All: Academic Paper Transformation Pipeline (`paper-2-web`)
-# Paper2All: Academic Paper Transformation Pipeline
+## Overview
 
 ### Parallel Web Systems API (`parallel-web`)
-# Parallel Web Systems API
+## Overview
 
 ### PathML (`pathml`)
-# PathML
+## Overview
 
 ### PDF Processing Guide (`pdf`)
-# PDF Processing Guide
+## Overview
 
 ### PennyLane (`pennylane`)
-# PennyLane
+## Overview
 
 ### Perplexity Search (`perplexity-search`)
-# Perplexity Search
+## Overview
 
 ### Phylogenetics (`phylogenetics`)
-# Phylogenetics
+## Overview
 
 ### PPTX Skill (`pptx`)
-# PPTX Skill
+## Quick Reference
 
 ### PrimeKG Knowledge Graph Skill (`primekg`)
-# PrimeKG Knowledge Graph Skill
+## Overview
 
 ### PufferLib - High-Performance Reinforcement Learning (`pufferlib`)
-# PufferLib - High-Performance Reinforcement Learning
+## Overview
 
 ### PyDESeq2 (`pydeseq2`)
-# PyDESeq2
+## Overview
 
 ### Pydicom (`pydicom`)
-# Pydicom
+## Overview
 
 ### PyHealth: Healthcare AI Toolkit (`pyhealth`)
-# PyHealth: Healthcare AI Toolkit
+## Overview
 
 ### Pymatgen - Python Materials Genomics (`pymatgen`)
-# Pymatgen - Python Materials Genomics
+## Overview
 
 ### PyMC Bayesian Modeling (`pymc`)
-# PyMC Bayesian Modeling
+## Overview
 
 ### Pymoo - Multi-Objective Optimization in Python (`pymoo`)
-# Pymoo - Multi-Objective Optimization in Python
+## Overview
 
 ### PyOpenMS (`pyopenms`)
-# PyOpenMS
+## Overview
 
 ### PyTDC (Therapeutics Data Commons) (`pytdc`)
-# PyTDC (Therapeutics Data Commons)
-
-### Pyzotero (`pyzotero`)
-# Pyzotero
+## Overview
 
 ### Qiskit (`qiskit`)
-# Qiskit
+## Overview
 
 ### NCBI GEO Database Query (`query-geo`)
-# NCBI GEO Database Query
+Query Gene Expression Omnibus for public expression datasets.
 
 ### InterPro Protein Domain Database (`query-interpro`)
-# InterPro Protein Domain Database
+Query the InterPro REST API for protein domains, families, and functional sites.
 
 ### QuTiP: Quantum Toolbox in Python (`qutip`)
-# QuTiP: Quantum Toolbox in Python
+## Overview
 
 ### Scholar Evaluation (`scholar-evaluation`)
-# Scholar Evaluation
+## Overview
 
 ### scikit-bio (`scikit-bio`)
-# scikit-bio
+## Overview
 
 ### scikit-survival: Survival Analysis in Python (`scikit-survival`)
-# scikit-survival: Survival Analysis in Python
+## Overview
 
 ### Sequence Analysis (`sequence-analysis`)
-# Sequence Analysis
+Comprehensive sequence analysis using BioPython and command-line tools.
 
 ### BioClaw Setup (`setup`)
-# BioClaw Setup
+Run all commands automatically. Only pause when user action is required (WhatsApp authentication, configuration choices).
 
 ### SHAP (SHapley Additive exPlanations) (`shap`)
-# SHAP (SHapley Additive exPlanations)
+## Overview
 
 ### SimPy - Discrete-Event Simulation (`simpy`)
-# SimPy - Discrete-Event Simulation
+## Overview
 
 ### Stable Baselines3 (`stable-baselines3`)
-# Stable Baselines3
+## Overview
 
 ### Statistical Analysis (`statistical-analysis`)
-# Statistical Analysis
+## Overview
 
 ### Treatment Plan Writing (`treatment-plans`)
-# Treatment Plan Writing
+## Overview
 
 ### UMAP-Learn (`umap-learn`)
-# UMAP-Learn
+## Overview
 
 ### U.S. Treasury Fiscal Data API (`usfiscaldata`)
-# U.S. Treasury Fiscal Data API
+Free, open REST API from the U.S. Department of the Treasury for federal financial data. No API key or registration required.
 
 ### USPTO Database (`uspto-database`)
-# USPTO Database
+## Overview
 
 ### Venue Templates (`venue-templates`)
-# Venue Templates
-
-### What-If Oracle — Possibility Space Explorer (`what-if-oracle`)
-# What-If Oracle — Possibility Space Explorer
+## Overview
 
 ### X (Twitter) Integration (`x-integration`)
-# X (Twitter) Integration
+Browser automation for X interactions via WhatsApp.
 
 ### Requirements for Outputs (`xlsx`)
-# Requirements for Outputs
+## All Excel files
 
 ### Zarr Python (`zarr-python`)
-# Zarr Python
+## Overview
 
 ---
 *Generated by scripts/inventory_skills.mjs*

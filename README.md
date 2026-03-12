@@ -1,65 +1,107 @@
 <p align="center">
-  <img src="assets/logo.png" width="300" />
+  <img src="assets/logo.png" width="350" />
 </p>
 
-# ClawOmics: Professional Bioinformatics Orchestration for OpenClaw
+<h1 align="center">ClawOmics</h1>
 
-**ClawOmics** is a high-performance, AI-driven bioinformatics orchestration agent designed for the [OpenClaw](https://github.com/openclaw/openclaw) ecosystem. It bridges the gap between raw biological data and expert-level insights by automating complex workflows, managing tool environments, and providing context-aware interpretation of multi-omics results.
+<p align="center">
+  <strong>Professional AI-Driven Bioinformatics Orchestration for OpenClaw</strong>
+</p>
 
----
-
-## 🚀 Core Features
-
-- **Intelligent Multi-Omics Orchestration**: Seamlessly coordinate pipelines across genomics, transcriptomics, single-cell analysis, and metabolic modeling.
-- **Automatic Environment Management**: Built-in support for `Conda` and `Mamba` to handle version-sensitive bioinformatics dependencies automatically.
-- **AI-Driven Biological Interpretation**: Go beyond statistics. ClawOmics translates technical outputs (PCA, DEG tables, mapping logs) into actionable biological narratives.
-- **Data-First Discovery**: Automatically identifies raw data types and recommends the optimal tools and skills for the task.
-- **Integrated Skill Suite**: Includes over 180+ specialized skills for scientific research, from database querying to advanced sequence analysis.
-
----
-
-## 🛠️ Installation & Setup
-
-ClawOmics is designed to be used as a set of specialized skills within an OpenClaw environment.
-
-### Prerequisites
-- [OpenClaw](https://github.com/openclaw/openclaw) installed and configured.
-- `Conda` or `Mamba` package manager (recommended for environment management).
-
-### Setup
-1. Clone this repository into your OpenClaw skills directory:
-   ```bash
-   git clone https://github.com/yf8578/clawomics.git
-   ```
-2. OpenClaw will automatically detect the `skills/bio-expert` orchestrator and its associated tools.
+<p align="center">
+  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License" />
+  <img src="https://img.shields.io/badge/OpenClaw-Compatible-orange.svg" alt="OpenClaw" />
+  <img src="https://img.shields.io/badge/Skills-200+-green.svg" alt="Skills" />
+  <img src="https://img.shields.io/badge/Domain-Bioinformatics-blueviolet.svg" alt="Domain" />
+</p>
 
 ---
 
-## 📂 Project Structure
+## 🧬 Your Intelligent Lab Partner
 
-- `skills/bio-expert`: The Master Orchestrator skill.
-- `skills/*`: A comprehensive collection of integrated scientific skills.
-- `docs/RESOURCES.md`: A dynamically generated inventory of all available skills.
-- `scripts/inventory_skills.mjs`: Utility script to scan and categorize skills.
+**ClawOmics** transforms your [OpenClaw](https://github.com/openclaw/openclaw) instance into a world-class bioinformatics research assistant. By combining a "Master Orchestrator" with a library of 200+ specialized scientific skills, it bridges the gap between raw biological data and expert-level discovery.
+
+### Why ClawOmics?
+- **🧠 Autonomous Strategy**: Not just a chatbot. ClawOmics identifies data types (FASTQ, H5AD, BAM) and plans multi-step analysis pipelines.
+- **🛠️ Batteries Included**: Pre-integrated with 200+ skills including Scanpy, DeepTools, Biopython, and database connectors for Ensembl, ClinVar, and AlphaFold.
+- **📦 Seamless Environment Control**: Automated `Conda` and `Mamba` management to ensure reproducible, version-stable scientific workflows.
+- **📖 AI-Driven Narrative**: Technical results are translated into biological insights, providing context-aware summaries of complex multi-omics data.
+
+---
+
+## 🏗️ Architecture
+
+ClawOmics operates on a "Brain-and-Arms" architecture:
+
+```mermaid
+graph TD
+    User((User)) -- "Natural Language" --> Brain[bio-expert: Master Orchestrator]
+    Brain -- "Data Discovery" --> Inventory[RESOURCES.md: 200+ Skills]
+    
+    subgraph "Specialized Skills (The Arms)"
+        Brain --> S1[Scanpy / Single-Cell]
+        Brain --> S2[DeepTools / NGS]
+        Brain --> S3[Database Queries]
+        Brain --> S4[CobraPy / Metabolic]
+    end
+    
+    S1 --> Results[Biological Insights & Reports]
+    S2 --> Results
+    S3 --> Results
+    S4 --> Results
+```
+
+---
+
+## 🚀 Quick Start
+
+### 1. Installation
+Clone ClawOmics into your OpenClaw workspace skills directory:
+
+```bash
+cd ~/.openclaw/workspace/skills
+git clone https://github.com/yf8578/clawomics.git
+```
+
+### 2. Initialize Resources
+Run the inventory script to register all 200+ skills with the orchestrator:
+
+```bash
+cd clawomics
+node scripts/inventory_skills.mjs
+```
+
+### 3. Usage Example
+Refer to our **[📖 Cookbook](./docs/COOKBOOK.md)** for detailed prompt examples and scenarios.
+
+**User:** *"Identify the files in my ./data folder and suggest a QC pipeline."*
+
+**ClawOmics:** *"I detected 4 FASTQ files. Using the **deeptools** and **fastp** skills, I will generate a MultiQC report. Should I proceed with environment creation?"*
+
+---
+
+## 📂 Project Navigation
+
+- **[`skills/bio-expert`](./skills/bio-expert)**: The core orchestration logic.
+- **[`skills/`](./skills)**: Library of 200+ integrated scientific skills.
+- **[`docs/RESOURCES.md`](./docs/RESOURCES.md)**: Full inventory of available tools and categories.
+- **[`docs/INTEGRATION_PLAN.md`](./docs/INTEGRATION_PLAN.md)**: Future capability expansion roadmap.
 
 ---
 
 ## 🙏 Credits & Attributions
 
-ClawOmics integrates and builds upon the excellent work of the following projects:
+ClawOmics stands on the shoulders of giants. We gratefully acknowledge:
 
-- **[Claude Scientific Skills](https://github.com/K-Dense-AI/claude-scientific-skills)** by K-Dense-AI: Provided the foundation for 170+ scientific research skills.
-- **[BioClaw](https://github.com/Runchuan-BU/BioClaw)** by Runchuan-BU: Provided specialized bioinformatics tools and inspirations for the initial orchestration logic.
-
-We are deeply grateful to the maintainers and contributors of these repositories for their contributions to the open-source AI and science community.
+- **[Claude Scientific Skills](https://github.com/K-Dense-AI/claude-scientific-skills)** by K-Dense-AI (170+ core research skills).
+- **[BioClaw](https://github.com/Runchuan-BU/BioClaw)** by Runchuan-BU (Specialized bio-logic and inspirations).
+- **The OpenClaw Community** for the underlying agent gateway infrastructure.
 
 ---
 
 ## 📄 License
 
-ClawOmics is distributed under the **MIT License**. 
-
-Individual skills integrated from external sources may carry their own licenses (mostly MIT). Please refer to the `SKILL.md` files within each skill directory for specific license information where applicable.
+Distributed under the **MIT License**. See `LICENSE` for details.
 
 ---
-*Created by [yf8578](https://github.com/yf8578)* 🧬🦞
+<p align="center">Built with 🧬 by <a href="https://github.com/yf8578">yf8578</a></p>
