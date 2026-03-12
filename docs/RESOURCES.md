@@ -1,6 +1,17 @@
-# ClawOmics Skill Resources
+# 🧬 ClawOmics Skill Resources
 
 This inventory lists all compatible OpenClaw skills available on the host system, categorized by their relevance to bioinformatics workflows.
+
+## 📊 Resource Summary
+
+| Category | Skill Count | Description |
+| :--- | :---: | :--- |
+| **NGS & Genomics** | 18 | Sequence analysis, mapping, and variant calling |
+| **Single-Cell & Spatial** | 6 | scRNA-seq, spatial transcriptomics, and clustering |
+| **Biological Databases** | 27 | PubMed, UniProt, Ensembl, and structure lookups |
+| **Cheminformatics** | 15 | RDKit, docking, and molecular simulations |
+| **General Science & Stats** | 43 | Visualization, statistics, and ML frameworks |
+| **Other Tools** | 91 | Utilities and general helper skills |
 
 ## NGS & Genomics
 

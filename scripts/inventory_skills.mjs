@@ -71,8 +71,19 @@ function generateMarkdown(skills) {
         return acc;
     }, {});
 
-    let md = '# ClawOmics Skill Resources\n\n';
+    let md = '# 🧬 ClawOmics Skill Resources\n\n';
     md += 'This inventory lists all compatible OpenClaw skills available on the host system, categorized by their relevance to bioinformatics workflows.\n\n';
+
+    // Add Summary Table
+    md += '## 📊 Resource Summary\n\n';
+    md += '| Category | Skill Count | Description |\n';
+    md += '| :--- | :---: | :--- |\n';
+    md += `| **NGS & Genomics** | ${grouped['NGS & Genomics']?.length || 0} | Sequence analysis, mapping, and variant calling |\n`;
+    md += `| **Single-Cell & Spatial** | ${grouped['Single-Cell & Spatial']?.length || 0} | scRNA-seq, spatial transcriptomics, and clustering |\n`;
+    md += `| **Biological Databases** | ${grouped['Biological Databases & Knowledge']?.length || 0} | PubMed, UniProt, Ensembl, and structure lookups |\n`;
+    md += `| **Cheminformatics** | ${grouped['Cheminformatics & Molecular Modeling']?.length || 0} | RDKit, docking, and molecular simulations |\n`;
+    md += `| **General Science & Stats** | ${grouped['General Scientific Computing & Stats']?.length || 0} | Visualization, statistics, and ML frameworks |\n`;
+    md += `| **Other Tools** | ${grouped['Other Tools']?.length || 0} | Utilities and general helper skills |\n\n`;
 
     for (const cat of Object.keys(CATEGORIES).concat(['Other Tools'])) {
         if (grouped[cat] && grouped[cat].length > 0) {
