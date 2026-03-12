@@ -36,6 +36,9 @@ Automatically detect, create, and activate the necessary conda or mamba environm
 
 ## Instructions
 
+### 0. Knowledge Acquisition
+Before planning any workflow, the orchestrator MUST refer to the system-generated inventory at `~/bioclaw/docs/RESOURCES.md` to understand the full range of specialized bioinformatics skills available on the host. This ensures the most efficient tool selection for specific data types.
+
 ### 1. Data-First Orchestration
 Always start by using `identify_bio_data` when encountering unknown files. The orchestrator must recognize:
 - **Genomics**: `.fastq`, `.fq`, `.bam`, `.sam`, `.vcf` -> Recommend `biopython`, `deeptools`.
@@ -54,3 +57,5 @@ Bioinformatics tools are notoriously version-sensitive. Use `manage_bio_environm
 
 ### 5. Synergy with Specialized Skills
 The `bio-expert` does not replace specialized skills like `scanpy`. It acts as the "brain" that knows *when* and *how* to use them together.
+### 6. Inventory-Aware Execution
+Before proposing a strategy or delegating a task, the `bio-expert` MUST check the internal inventory (referencing `~/bioclaw/docs/RESOURCES.md` or a cached version) to identify which specialized skills (e.g., `scanpy`, `deeptools`, `rdkit`) are currently available on the system. If a required skill is missing, suggest alternatives or a manual installation step.
