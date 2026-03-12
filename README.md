@@ -1,6 +1,6 @@
-# BioClaw: Professional Bioinformatics Orchestration for OpenClaw
+# ClawOmics: Professional Bioinformatics Orchestration for OpenClaw
 
-**BioClaw** is a high-performance, AI-driven bioinformatics orchestration agent designed for the [OpenClaw](https://github.com/openclaw/openclaw) ecosystem. It bridges the gap between raw biological data and expert-level insights by automating complex workflows, managing tool environments, and providing context-aware interpretation of multi-omics results.
+**ClawOmics** is a high-performance, AI-driven bioinformatics orchestration agent designed for the [OpenClaw](https://github.com/openclaw/openclaw) ecosystem. It bridges the gap between raw biological data and expert-level insights by automating complex workflows, managing tool environments, and providing context-aware interpretation of multi-omics results.
 
 ---
 
@@ -8,7 +8,7 @@
 
 - **Intelligent Multi-Omics Orchestration**: Seamlessly coordinate pipelines across genomics, transcriptomics, single-cell analysis, and metabolic modeling.
 - **Automatic Environment Management**: Built-in support for `Conda` and `Mamba` to handle version-sensitive bioinformatics dependencies automatically.
-- **AI-Driven Biological Interpretation**: Go beyond statistics. BioClaw translates technical outputs (PCA, DEG tables, mapping logs) into actionable biological narratives.
+- **AI-Driven Biological Interpretation**: Go beyond statistics. ClawOmics translates technical outputs (PCA, DEG tables, mapping logs) into actionable biological narratives.
 - **Data-First Discovery**: Automatically identifies raw data types and recommends the optimal tools and skills for the task.
 - **Seamless Integration**: Natively works with specialized skills like `scanpy`, `biopython`, `deeptools`, and `scvi-tools`.
 
@@ -16,7 +16,7 @@
 
 ## 🛠️ Installation & Setup
 
-BioClaw is designed to be used as a set of specialized skills within an OpenClaw environment.
+ClawOmics is designed to be used as a set of specialized skills within an OpenClaw environment.
 
 ### Prerequisites
 - [OpenClaw](https://github.com/openclaw/openclaw) installed and configured.
@@ -25,7 +25,7 @@ BioClaw is designed to be used as a set of specialized skills within an OpenClaw
 ### Setup
 1. Clone this repository into your OpenClaw skills directory:
    ```bash
-   git clone https://github.com/your-repo/bioclaw.git
+   git clone https://github.com/your-repo/clawomics.git
    ```
 2. OpenClaw will automatically detect the `skills/bio-expert` orchestrator and its associated tools.
 
@@ -34,11 +34,11 @@ BioClaw is designed to be used as a set of specialized skills within an OpenClaw
 ## 📖 Usage Examples
 
 ### 1. Identify and Analyze Raw Data
-Simply point BioClaw to a directory, and it will identify the data types and suggest a starting point.
+Simply point ClawOmics to a directory, and it will identify the data types and suggest a starting point.
 > "Analyze the files in `./data/raw_seq` and tell me what I should do next."
 
 ### 2. Execute a Multi-Step Workflow
-BioClaw can plan and execute complex pipelines, ensuring each step validates before proceeding.
+ClawOmics can plan and execute complex pipelines, ensuring each step validates before proceeding.
 > "Run a standard QC and mapping pipeline on the FASTQ files in `./data`, using the GRCh38 reference."
 
 ### 3. Interpret Complex Results
