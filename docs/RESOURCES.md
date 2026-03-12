@@ -1,4 +1,4 @@
-# Geneclaw Skill Resources
+# ClawOmics Skill Resources
 
 This inventory lists all compatible OpenClaw skills available on the host system, categorized by their relevance to bioinformatics workflows.
 
@@ -357,7 +357,7 @@ Adds Parallel AI MCP integration to BioClaw for advanced web research capabiliti
 # BindingDB Database
 
 ### bio-expert (`bio-expert`)
-The Master Orchestrator for Geneclaw, designed to coordinate complex bioinformatics workflows, manage environments, and provide AI-driven interpretation of results across diverse biological data types.
+The Master Orchestrator for ClawOmics, designed to coordinate complex bioinformatics workflows, manage environments, and provide AI-driven interpretation of results across diverse biological data types.
 
 ### BLAST Search (`blast-search`)
 # BLAST Search

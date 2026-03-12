@@ -2,8 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 
-const SKILLS_DIR = path.join(os.homedir(), 'geneclaw', 'skills');
-const OUTPUT_FILE = path.join(os.homedir(), 'geneclaw', 'docs', 'RESOURCES.md');
+const SKILLS_DIR = path.join(os.homedir(), 'clawomics', 'skills');
+const OUTPUT_FILE = path.join(os.homedir(), 'clawomics', 'docs', 'RESOURCES.md');
 
 const CATEGORIES = {
     'NGS & Genomics': [/fastq/i, /bam/i, /sam/i, /vcf/i, /bwa/i, /bowtie/i, /deeptools/i, /variant/i, /genome/i, /dna/i, /rna/i, /bed/i, /interval/i, /gtars/i, /pysam/i, /ena/i, /ensembl/i],
@@ -67,7 +67,7 @@ function generateMarkdown(skills) {
         return acc;
     }, {});
 
-    let md = '# Geneclaw Skill Resources\n\n';
+    let md = '# ClawOmics Skill Resources\n\n';
     md += 'This inventory lists all compatible OpenClaw skills available on the host system, categorized by their relevance to bioinformatics workflows.\n\n';
 
     for (const cat of Object.keys(CATEGORIES).concat(['Other Tools'])) {
