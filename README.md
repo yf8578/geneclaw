@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.png" width="300" />
+</p>
+
 # ClawOmics: Professional Bioinformatics Orchestration for OpenClaw
 
 **ClawOmics** is a high-performance, AI-driven bioinformatics orchestration agent designed for the [OpenClaw](https://github.com/openclaw/openclaw) ecosystem. It bridges the gap between raw biological data and expert-level insights by automating complex workflows, managing tool environments, and providing context-aware interpretation of multi-omics results.
