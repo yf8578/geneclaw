@@ -1,4 +1,4 @@
-# ClawOmics Skill Resources
+# Geneclaw Skill Resources
 
 This inventory lists all compatible OpenClaw skills available on the host system, categorized by their relevance to bioinformatics workflows.
 
