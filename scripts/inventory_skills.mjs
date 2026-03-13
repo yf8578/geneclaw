@@ -1,9 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import os from 'os';
+import { fileURLToPath } from 'url';
 
-const SKILLS_DIR = path.join(os.homedir(), 'clawomics', 'skills');
-const OUTPUT_FILE = path.join(os.homedir(), 'clawomics', 'docs', 'RESOURCES.md');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PROJECT_ROOT = process.env.CLAWOMICS_HOME || path.resolve(__dirname, '..');
+const SKILLS_DIR = path.join(PROJECT_ROOT, 'skills');
+const OUTPUT_FILE = path.join(PROJECT_ROOT, 'docs', 'RESOURCES.md');
 
 const CATEGORIES = {
     'NGS & Genomics': [/fastq/i, /bam/i, /sam/i, /vcf/i, /bwa/i, /bowtie/i, /deeptools/i, /variant/i, /genome/i, /dna/i, /rna/i, /bed/i, /interval/i, /gtars/i, /pysam/i, /ena/i, /ensembl/i],

@@ -380,7 +380,7 @@ Access 20+ years of global financial data: equities, options, forex, crypto, com
 ## Overview
 
 ### bio-expert (`bio-expert`)
-The Master Orchestrator for ClawOmics, designed to coordinate complex bioinformatics workflows, manage environments, and provide AI-driven interpretation of results across diverse biological data types.
+The master orchestrator for ClawOmics. It profiles local bioinformatics datasets, infers the most likely analysis class, and drafts structured first-pass workflow plans for OpenClaw to refine.
 
 ### BLAST Search (`blast-search`)
 Run NCBI BLAST+ searches inside the BioClaw container.

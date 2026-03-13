@@ -19,10 +19,13 @@
 
 ## 🧬 Your Intelligent Lab Partner
 
-**ClawOmics** transforms your [OpenClaw](https://github.com/openclaw/openclaw) instance into a world-class bioinformatics research assistant. By combining a "Master Orchestrator" with a library of 200+ specialized scientific skills, it bridges the gap between raw biological data and expert-level discovery.
+**ClawOmics** transforms your [OpenClaw](https://github.com/openclaw/openclaw) instance into a bioinformatics agent framework. By combining a master orchestrator with a library of specialized scientific skills, it turns raw biological data into a confirmable and executable analysis workflow.
 
 ### Why ClawOmics?
-- **🧠 Autonomous Strategy**: Not just a chatbot. ClawOmics identifies data types (FASTQ, H5AD, BAM) and plans multi-step analysis pipelines.
+- **🧠 Automatic Planning**: ClawOmics profiles your dataset (FASTQ, H5AD, BAM, VCF) and generates a structured first-pass analysis plan.
+- **🧩 Mixed Dataset Triage**: Mixed input folders are partitioned into analysis units so raw reads, VCFs, and processed tables can be handled separately.
+- **🧪 Assay Routing**: Raw sequencing inputs now produce assay candidates such as `bulk-rnaseq` or `dna-seq`, with follow-up questions when confidence is low.
+- **🧭 Agent Framework**: Outputs include explicit agent state, confirmation gates, and persistent run artifacts that OpenClaw can use across turns.
 - **🛠️ Batteries Included**: Pre-integrated with 200+ skills including Scanpy, DeepTools, Biopython, and database connectors for Ensembl, ClinVar, and AlphaFold.
 - **📦 Seamless Environment Control**: Automated `Conda` and `Mamba` management to ensure reproducible, version-stable scientific workflows.
 - **📖 AI-Driven Narrative**: Technical results are translated into biological insights, providing context-aware summaries of complex multi-omics data.
@@ -32,8 +35,13 @@
 ## 🆕 What's New in v1.1
 
 - **🔧 CLI Interface**: New `clawomics.mjs` CLI for one-command operations
+- **🗂️ Dataset Profiling**: `bio-expert` now emits structured dataset profiles for OpenClaw
+- **🧭 Auto Planning**: New `plan` command builds first-pass workflows from detected evidence
+- **🪓 Dataset Partitioning**: New `partition` command separates mixed directories into analysis units
+- **💾 JSON Artifacts**: `profile`, `partition`, and `plan` can now be written to disk for downstream automation
+- **▶️ Confirmed Run Bootstrap**: `run` creates a tracked workspace with a manifest and step scripts after the user confirms execution
 - **🧪 Demo Data Generator**: `generate_demo_data.mjs` creates test datasets instantly
-- **🧠 Working Orchestrator**: `bio-expert/scripts/orchestrator.mjs` actually executes workflows
+- **🧠 Working Orchestrator**: `bio-expert/scripts/orchestrator.mjs` profiles datasets and drafts workflow plans
 - **📊 Resource Summary**: Auto-generated skill statistics table in RESOURCES.md
 - **📖 Cookbook**: New `docs/COOKBOOK.md` with prompt templates
 
@@ -86,8 +94,26 @@ node scripts/clawomics.mjs setup
 # Generate demo data for testing
 node scripts/clawomics.mjs demo
 
-# Identify data formats
-node scripts/clawomics.mjs identify demo_data
+# Natural-language entrypoint
+node scripts/clawomics.mjs agent "demo_data 里有数据，帮我分析一下" --write
+
+# Confirm and create a run workspace
+node scripts/clawomics.mjs agent "确认执行" --session demo_data/agent_session.json
+
+# Build profile + partitions + plan in one step
+node scripts/clawomics.mjs analyze demo_data --write
+
+# Build a structured dataset profile
+node scripts/clawomics.mjs profile demo_data --write
+
+# Generate an automatic analysis plan
+node scripts/clawomics.mjs plan demo_data --write
+
+# Split mixed inputs into analysis units
+node scripts/clawomics.mjs partition demo_data --write
+
+# After the user confirms, bootstrap a runnable workspace
+node scripts/clawomics.mjs run demo_data --approve
 ```
 
 ### 3. Initialize Resources
@@ -99,12 +125,51 @@ node scripts/inventory_skills.mjs
 
 This generates `docs/RESOURCES.md` with a summary table of all available tools.
 
-### 3. Usage Example
+### 4. Usage Example
 Refer to our **[📖 Cookbook](./docs/COOKBOOK.md)** for detailed prompt examples and scenarios.
 
-**User:** *"Identify the files in my ./data folder and suggest a QC pipeline."*
+**User:** *"`./data` 里有一批测序数据，帮我看看该怎么分析。"*
 
-**ClawOmics:** *"I detected 4 FASTQ files. Using the **deeptools** and **fastp** skills, I will generate a MultiQC report. Should I proceed with environment creation?"*
+**ClawOmics:** *"I detected a mixed directory containing FASTQ, VCF, and tabular outputs. I split this into raw-sequencing and variant-analysis units. For the FASTQ unit, assay routing is still low-confidence, so I recommend confirming whether the reads are DNA-seq or RNA-seq before alignment."*
+
+### 4.1 Generated Artifacts
+
+When you add `--write`, ClawOmics writes machine-readable artifacts next to the input dataset:
+
+- `analysis_bundle.json`
+- `dataset_profile.json`
+- `dataset_partitions.json`
+- `analysis_plan.json`
+- `agent_session.json`
+
+After `run --approve`, ClawOmics also creates a run workspace:
+
+- `clawomics_runs/<run-id>/run_manifest.json`
+- `clawomics_runs/<run-id>/commands/*.sh`
+
+### 5. OpenClaw Usage Model
+
+ClawOmics is designed to stay simple inside OpenClaw:
+
+- **OpenClaw provides the model layer** for planning and explanation.
+- **ClawOmics provides the dataset profiler and workflow scaffolding**.
+- **No separate LLM configuration is required** for the first-pass planning flow in this repository.
+
+### 5.1 Intended OpenClaw Flow
+
+1. User tells OpenClaw where the data live.
+2. OpenClaw calls `agent "<user-message>" --write` or routes equivalently to `analyze`.
+3. ClawOmics returns profile, partitions, and a first-pass plan.
+4. User confirms execution.
+5. OpenClaw calls `agent "确认执行" --session <agent_session.json>` or routes equivalently to `run --approve`.
+6. ClawOmics creates a tracked run workspace and command templates.
+
+`agent_session.json` is the durable bridge between those turns. OpenClaw can reload it instead of relying on the model to remember hidden workflow state.
+
+### 5.2 Framework Docs
+
+- [docs/PRODUCT_FRAMEWORK.md](./docs/PRODUCT_FRAMEWORK.md): product positioning, scope, boundaries, and principles
+- [docs/AGENT_PROTOCOL.md](./docs/AGENT_PROTOCOL.md): state machine, OpenClaw flow, and artifact contract
 
 ---
 
@@ -113,6 +178,9 @@ Refer to our **[📖 Cookbook](./docs/COOKBOOK.md)** for detailed prompt example
 - **[`skills/bio-expert`](./skills/bio-expert)**: The core orchestration logic.
 - **[`skills/`](./skills)**: Library of 200+ integrated scientific skills.
 - **[`docs/RESOURCES.md`](./docs/RESOURCES.md)**: Full inventory of available tools and categories.
+- **[`docs/PRODUCT_FRAMEWORK.md`](./docs/PRODUCT_FRAMEWORK.md)**: Product definition for the ClawOmics agent.
+- **[`docs/AGENT_PROTOCOL.md`](./docs/AGENT_PROTOCOL.md)**: Runtime contract between OpenClaw and ClawOmics.
+- **[`docs/OPENCLAW_INTEGRATION.md`](./docs/OPENCLAW_INTEGRATION.md)**: Practical routing guide for OpenClaw conversation logic.
 - **[`docs/INTEGRATION_PLAN.md`](./docs/INTEGRATION_PLAN.md)**: Future capability expansion roadmap.
 
 ---
