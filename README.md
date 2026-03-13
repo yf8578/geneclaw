@@ -32,9 +32,12 @@
 
 ---
 
-## 🆕 What's New in v1.1
+## 🆕 What's New in v1.2
 
 - **🔧 CLI Interface**: New `clawomics.mjs` CLI for one-command operations
+- **🧰 Global Command Entry**: `npm link` now exposes a reusable `clawomics` command
+- **🪄 One-Command Startup**: `clawomics start` checks MCP readiness and starts the chat bridge
+- **🔌 MCP Server**: New local MCP server for chat-first integration with OpenClaw and other MCP-capable clients
 - **🗂️ Dataset Profiling**: `bio-expert` now emits structured dataset profiles for OpenClaw
 - **🧭 Auto Planning**: New `plan` command builds first-pass workflows from detected evidence
 - **🪓 Dataset Partitioning**: New `partition` command separates mixed directories into analysis units
@@ -49,24 +52,65 @@
 
 ## 🏗️ Architecture
 
-ClawOmics operates on a "Brain-and-Arms" architecture:
+ClawOmics now operates as a chat-first workflow layer with three surfaces:
+- chat clients call the MCP bridge
+- the bridge calls the `bio-expert` orchestrator
+- the orchestrator emits durable artifacts and run workspaces
 
 ```mermaid
 graph TD
-    User((User)) -- "Natural Language" --> Brain[bio-expert: Master Orchestrator]
-    Brain -- "Data Discovery" --> Inventory[RESOURCES.md: 200+ Skills]
-    
-    subgraph "Specialized Skills (The Arms)"
-        Brain --> S1[Scanpy / Single-Cell]
-        Brain --> S2[DeepTools / NGS]
-        Brain --> S3[Database Queries]
-        Brain --> S4[CobraPy / Metabolic]
-    end
-    
-    S1 --> Results[Biological Insights & Reports]
-    S2 --> Results
-    S3 --> Results
-    S4 --> Results
+    User["User"] --> Client["OpenClaw / Codex / Gemini Host"]
+    Client --> MCP["clawomics-mcp-server"]
+    MCP --> Turn["clawomics_agent_turn"]
+    Turn --> Orchestrator["bio-expert orchestrator"]
+
+    Orchestrator --> Profile["dataset_profile.json"]
+    Orchestrator --> Partitions["dataset_partitions.json"]
+    Orchestrator --> Plan["analysis_plan.json"]
+    Orchestrator --> Session["agent_session.json"]
+    Orchestrator --> Bridge[".clawomics/openclaw_context.json"]
+
+    Orchestrator --> Skills["skills/ registry"]
+    Skills --> S1["scanpy / scvi-tools"]
+    Skills --> S2["deeptools / pysam"]
+    Skills --> S3["database connectors"]
+
+    Orchestrator --> Run["clawomics_runs/<run-id>/"]
+    Run --> Manifest["run_manifest.json"]
+    Run --> Commands["commands/*.sh"]
+
+    classDef client fill:#f7f1e3,stroke:#8c6d1f,color:#222;
+    classDef core fill:#e6f4ea,stroke:#2f855a,color:#222;
+    classDef artifact fill:#e8f0fe,stroke:#356ac3,color:#222;
+    classDef run fill:#fce8e6,stroke:#c53929,color:#222;
+
+    class Client,MCP,Turn client;
+    class Orchestrator,Skills,S1,S2,S3 core;
+    class Profile,Partitions,Plan,Session,Bridge artifact;
+    class Run,Manifest,Commands run;
+```
+
+### Runtime Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant C as Chat Client
+    participant M as MCP Server
+    participant O as bio-expert
+
+    U->>C: "/data/project1 里有数据，帮我分析"
+    C->>M: clawomics_agent_turn(message)
+    M->>O: handleAgentMessage()
+    O-->>M: profile + plan + confirmation prompt
+    M-->>C: assistantReply
+    C-->>U: 展示计划并请求确认
+    U->>C: "确认执行"
+    C->>M: clawomics_agent_turn(message)
+    M->>O: resume latest bridge state
+    O-->>M: run workspace + manifest
+    M-->>C: assistantReply + run paths
+    C-->>U: 告知已创建运行目录
 ```
 
 ---
@@ -166,6 +210,14 @@ ClawOmics is designed to stay simple inside OpenClaw:
 - **ClawOmics provides the dataset profiler and workflow scaffolding**.
 - **No separate LLM configuration is required** for the first-pass planning flow in this repository.
 - **The recommended production integration is MCP**, so users only interact through the chat box.
+
+For day-to-day use, the intended operator flow is:
+
+```bash
+clawomics start
+```
+
+After that, the rest should happen inside the chat client rather than through more ClawOmics commands.
 
 ### 5.1 Intended OpenClaw Flow
 

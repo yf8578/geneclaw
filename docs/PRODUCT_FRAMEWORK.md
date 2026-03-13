@@ -4,6 +4,30 @@
 
 ClawOmics is a bioinformatics agent framework built on top of OpenClaw that turns a natural-language request plus a data directory into a reviewable, confirmable, and executable analysis workflow.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    User["User message"] --> Client["MCP-capable chat client"]
+    Client --> MCP["clawomics-mcp-server"]
+    MCP --> Orchestrator["bio-expert orchestrator"]
+
+    Orchestrator --> Profiling["Profiling"]
+    Orchestrator --> Planning["Planning"]
+    Orchestrator --> Confirm["Confirmation gate"]
+    Orchestrator --> Run["Run bootstrap"]
+
+    Profiling --> Artifacts["dataset_profile.json / dataset_partitions.json"]
+    Planning --> Plan["analysis_plan.json"]
+    Confirm --> Session["agent_session.json / bridge state"]
+    Run --> Workspace["run_manifest.json / commands/*.sh"]
+```
+
+This architecture is deliberate:
+- chat clients own conversation UX
+- ClawOmics owns workflow state and artifacts
+- the MCP bridge hides command syntax from end users
+
 ## Product Boundary
 
 ### OpenClaw owns
@@ -34,7 +58,7 @@ The system should then:
 3. Ask for confirmation before execution.
 4. Create a tracked run workspace after confirmation.
 
-In practice, the dialogue-facing backend entry should be `agent "<user-message>"`, with `agent_session.json` carrying durable state across turns.
+In practice, the dialogue-facing backend entry should be the MCP tool `clawomics_agent_turn`, with `agent_session.json` and the local bridge state carrying durable state across turns.
 
 The system should not depend on the model remembering hidden internal state between turns. Durable session artifacts should carry that state.
 

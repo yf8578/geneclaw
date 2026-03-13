@@ -7,6 +7,17 @@ Goal:
 - OpenClaw calls ClawOmics as an MCP tool
 - no CLI flags are exposed to the end user
 
+## Deployment View
+
+```mermaid
+graph LR
+    User["User"] --> Client["OpenClaw / MCP client"]
+    Client --> MCP["clawomics-mcp-server"]
+    MCP --> Orchestrator["bio-expert orchestrator"]
+    Orchestrator --> State["agent_session.json + bridge state"]
+    Orchestrator --> Outputs["plan / manifest / command templates"]
+```
+
 ## Install Dependencies
 
 From the repository root:
