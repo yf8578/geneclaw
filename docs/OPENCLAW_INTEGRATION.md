@@ -4,6 +4,16 @@
 
 Use ClawOmics as the bioinformatics workflow layer behind a natural-language OpenClaw assistant.
 
+## Easiest Operator Flow
+
+If ClawOmics has already been linked as a global command, the intended daily operator flow is:
+
+```bash
+clawomics start
+```
+
+After that, the operator should stop using ClawOmics commands directly and continue only through the chat interface.
+
 ## Recommended Routing
 
 ### Preferred backend entry: `agent`

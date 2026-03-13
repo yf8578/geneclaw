@@ -21,6 +21,25 @@
 
 **ClawOmics** transforms your [OpenClaw](https://github.com/openclaw/openclaw) instance into a bioinformatics agent framework. By combining a master orchestrator with a library of specialized scientific skills, it turns raw biological data into a confirmable and executable analysis workflow.
 
+## ⚡ Simplest Usage
+
+If you only care about the easiest way to run ClawOmics, use this:
+
+```bash
+cd /Users/zhangyifan/clawomics
+npm install
+npm link
+clawomics start
+```
+
+After `clawomics start`, keep that process running and do the rest in your MCP-enabled chat client.
+
+The intended end-user flow is:
+- start ClawOmics once
+- open OpenClaw / Codex / another MCP-capable client
+- say where the data are
+- say "确认执行" when you want it to proceed
+
 ### Why ClawOmics?
 - **🧠 Automatic Planning**: ClawOmics profiles your dataset (FASTQ, H5AD, BAM, VCF) and generates a structured first-pass analysis plan.
 - **🧩 Mixed Dataset Triage**: Mixed input folders are partitioned into analysis units so raw reads, VCFs, and processed tables can be handled separately.
@@ -32,21 +51,27 @@
 
 ---
 
-## 🆕 What's New in v1.2
+## 🆕 Release Notes
 
-- **🔧 CLI Interface**: New `clawomics.mjs` CLI for one-command operations
-- **🧰 Global Command Entry**: `npm link` now exposes a reusable `clawomics` command
-- **🪄 One-Command Startup**: `clawomics start` checks MCP readiness and starts the chat bridge
-- **🔌 MCP Server**: New local MCP server for chat-first integration with OpenClaw and other MCP-capable clients
-- **🗂️ Dataset Profiling**: `bio-expert` now emits structured dataset profiles for OpenClaw
-- **🧭 Auto Planning**: New `plan` command builds first-pass workflows from detected evidence
-- **🪓 Dataset Partitioning**: New `partition` command separates mixed directories into analysis units
-- **💾 JSON Artifacts**: `profile`, `partition`, and `plan` can now be written to disk for downstream automation
-- **▶️ Confirmed Run Bootstrap**: `run` creates a tracked workspace with a manifest and step scripts after the user confirms execution
-- **🧪 Demo Data Generator**: `generate_demo_data.mjs` creates test datasets instantly
-- **🧠 Working Orchestrator**: `bio-expert/scripts/orchestrator.mjs` profiles datasets and drafts workflow plans
-- **📊 Resource Summary**: Auto-generated skill statistics table in RESOURCES.md
-- **📖 Cookbook**: New `docs/COOKBOOK.md` with prompt templates
+<details open>
+  <summary><strong>v1.2</strong></summary>
+
+  <ul>
+    <li><strong>🔧 CLI Interface</strong>: New <code>clawomics.mjs</code> CLI for one-command operations</li>
+    <li><strong>🧰 Global Command Entry</strong>: <code>npm link</code> now exposes a reusable <code>clawomics</code> command</li>
+    <li><strong>🪄 One-Command Startup</strong>: <code>clawomics start</code> checks MCP readiness and starts the chat bridge</li>
+    <li><strong>🔌 MCP Server</strong>: New local MCP server for chat-first integration with OpenClaw and other MCP-capable clients</li>
+    <li><strong>🗂️ Dataset Profiling</strong>: <code>bio-expert</code> now emits structured dataset profiles for OpenClaw</li>
+    <li><strong>🧭 Auto Planning</strong>: New <code>plan</code> command builds first-pass workflows from detected evidence</li>
+    <li><strong>🪓 Dataset Partitioning</strong>: New <code>partition</code> command separates mixed directories into analysis units</li>
+    <li><strong>💾 JSON Artifacts</strong>: <code>profile</code>, <code>partition</code>, and <code>plan</code> can now be written to disk for downstream automation</li>
+    <li><strong>▶️ Confirmed Run Bootstrap</strong>: <code>run</code> creates a tracked workspace with a manifest and step scripts after the user confirms execution</li>
+    <li><strong>🧪 Demo Data Generator</strong>: <code>generate_demo_data.mjs</code> creates test datasets instantly</li>
+    <li><strong>🧠 Working Orchestrator</strong>: <code>bio-expert/scripts/orchestrator.mjs</code> profiles datasets and drafts workflow plans</li>
+    <li><strong>📊 Resource Summary</strong>: Auto-generated skill statistics table in <code>RESOURCES.md</code></li>
+    <li><strong>📖 Cookbook</strong>: New <code>docs/COOKBOOK.md</code> with prompt templates</li>
+  </ul>
+</details>
 
 ---
 
@@ -125,8 +150,22 @@ cd ~/.openclaw/workspace/skills
 git clone https://github.com/yf8578/clawomics.git
 ```
 
-### 2. Quick CLI Setup
-Initialize the environment and generate demo data:
+### 2. Minimal Daily Workflow
+
+For normal use, you usually only need:
+
+```bash
+cd /Users/zhangyifan/clawomics
+npm install
+npm link
+clawomics start
+```
+
+Then switch to your chat client and talk to it directly.
+
+### 3. Advanced CLI and Debug Setup
+
+If you want the lower-level commands for debugging or local testing:
 
 ```bash
 cd clawomics
@@ -171,7 +210,7 @@ node scripts/clawomics.mjs partition demo_data --write
 node scripts/clawomics.mjs run demo_data --approve
 ```
 
-### 3. Initialize Resources
+### 4. Initialize Resources
 Update the skill inventory to register all 200+ skills:
 
 ```bash
@@ -180,14 +219,14 @@ node scripts/inventory_skills.mjs
 
 This generates `docs/RESOURCES.md` with a summary table of all available tools.
 
-### 4. Usage Example
+### 5. Usage Example
 Refer to our **[📖 Cookbook](./docs/COOKBOOK.md)** for detailed prompt examples and scenarios.
 
 **User:** *"`./data` 里有一批测序数据，帮我看看该怎么分析。"*
 
 **ClawOmics:** *"I detected a mixed directory containing FASTQ, VCF, and tabular outputs. I split this into raw-sequencing and variant-analysis units. For the FASTQ unit, assay routing is still low-confidence, so I recommend confirming whether the reads are DNA-seq or RNA-seq before alignment."*
 
-### 4.1 Generated Artifacts
+### 5.1 Generated Artifacts
 
 When you add `--write`, ClawOmics writes machine-readable artifacts next to the input dataset:
 
@@ -202,7 +241,7 @@ After `run --approve`, ClawOmics also creates a run workspace:
 - `clawomics_runs/<run-id>/run_manifest.json`
 - `clawomics_runs/<run-id>/commands/*.sh`
 
-### 5. OpenClaw Usage Model
+### 6. OpenClaw Usage Model
 
 ClawOmics is designed to stay simple inside OpenClaw:
 
@@ -219,7 +258,7 @@ clawomics start
 
 After that, the rest should happen inside the chat client rather than through more ClawOmics commands.
 
-### 5.1 Intended OpenClaw Flow
+### 6.1 Intended OpenClaw Flow
 
 1. User tells OpenClaw where the data live.
 2. OpenClaw calls `agent "<user-message>"` or `agent "<user-message>" --compact`.
@@ -230,7 +269,7 @@ After that, the rest should happen inside the chat client rather than through mo
 
 `agent_session.json` is the durable per-dataset state, and `.clawomics/openclaw_context.json` stores the latest conversation bridge so confirmation turns do not need to pass extra parameters.
 
-### 5.2 Framework Docs
+### 6.2 Framework Docs
 
 - [docs/PRODUCT_FRAMEWORK.md](./docs/PRODUCT_FRAMEWORK.md): product positioning, scope, boundaries, and principles
 - [docs/AGENT_PROTOCOL.md](./docs/AGENT_PROTOCOL.md): state machine, OpenClaw flow, and artifact contract

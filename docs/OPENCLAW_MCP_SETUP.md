@@ -7,6 +7,22 @@ Goal:
 - OpenClaw calls ClawOmics as an MCP tool
 - no CLI flags are exposed to the end user
 
+## Shortest Path
+
+If you want the simplest setup and daily usage:
+
+```bash
+cd /Users/zhangyifan/clawomics
+npm install
+npm link
+clawomics start
+```
+
+After that:
+- keep the process alive
+- open your MCP-enabled chat client
+- only talk in the chat box
+
 ## Deployment View
 
 ```mermaid
