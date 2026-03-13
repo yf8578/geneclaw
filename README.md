@@ -82,6 +82,14 @@ ClawOmics now operates as a chat-first workflow layer with three surfaces:
 - the bridge calls the `bio-expert` orchestrator
 - the orchestrator emits durable artifacts and run workspaces
 
+This is the intended boundary:
+- `bio-expert` skill: domain policy and workflow semantics
+- `orchestrator`: real profiling, planning, session, and run logic
+- `MCP bridge`: thin transport layer for chat clients
+
+If you only need a local OpenClaw skill, you can think mostly in terms of `bio-expert`.
+If you need Feishu, Telegram, or other chat channels to auto-route and resume state, the MCP bridge becomes necessary.
+
 ```mermaid
 graph TD
     User["User"] --> Client["OpenClaw / Codex / Gemini Host"]
@@ -278,6 +286,7 @@ After that, the rest should happen inside the chat client rather than through mo
 - [docs/AGENT_PROTOCOL.md](./docs/AGENT_PROTOCOL.md): state machine, OpenClaw flow, and artifact contract
 - [docs/OPENCLAW_SYSTEM_PROMPT.md](./docs/OPENCLAW_SYSTEM_PROMPT.md): ready-to-use system prompt template for the OpenClaw conversation layer
 - [docs/OPENCLAW_MCP_SETUP.md](./docs/OPENCLAW_MCP_SETUP.md): MCP-based integration guide for the cleanest chat-first experience
+- [docs/CHAT_CHANNEL_ROUTING.md](./docs/CHAT_CHANNEL_ROUTING.md): automatic routing rules for Feishu, Telegram, and other mixed-purpose chat channels
 
 ---
 
@@ -291,6 +300,7 @@ After that, the rest should happen inside the chat client rather than through mo
 - **[`docs/OPENCLAW_INTEGRATION.md`](./docs/OPENCLAW_INTEGRATION.md)**: Practical routing guide for OpenClaw conversation logic.
 - **[`docs/OPENCLAW_SYSTEM_PROMPT.md`](./docs/OPENCLAW_SYSTEM_PROMPT.md)**: Prompt template for the OpenClaw integration layer.
 - **[`docs/OPENCLAW_MCP_SETUP.md`](./docs/OPENCLAW_MCP_SETUP.md)**: MCP server setup for direct OpenClaw tool integration.
+- **[`docs/CHAT_CHANNEL_ROUTING.md`](./docs/CHAT_CHANNEL_ROUTING.md)**: Auto-routing strategy for Feishu, Telegram, and similar chat channels.
 - **[`docs/INTEGRATION_PLAN.md`](./docs/INTEGRATION_PLAN.md)**: Future capability expansion roadmap.
 
 ---

@@ -68,6 +68,7 @@ node scripts/clawomics.mjs mcp
 This launches the local stdio MCP server:
 
 - server name: `clawomics-mcp-server`
+- route tool: `clawomics_should_route_message`
 - primary tool: `clawomics_agent_turn`
 
 ## Suggested OpenClaw MCP Registration
@@ -99,6 +100,14 @@ Examples:
 - user: "确认执行"
 
 The tool persists bridge state automatically, so the confirmation turn can resume without a visible session argument.
+
+### Recommended routing tool
+
+Before calling the primary tool in a mixed-purpose chat channel, ask:
+
+- `clawomics_should_route_message`
+
+This helps OpenClaw decide whether a Feishu or Telegram message should be handed to ClawOmics at all.
 
 ### Optional debug tools
 

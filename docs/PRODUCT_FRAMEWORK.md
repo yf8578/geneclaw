@@ -28,6 +28,11 @@ This architecture is deliberate:
 - ClawOmics owns workflow state and artifacts
 - the MCP bridge hides command syntax from end users
 
+In other words:
+- a single `skill` is enough to define behavior
+- the `orchestrator` is needed to make that behavior executable and stateful
+- the MCP layer is only needed when external chat clients must call the system automatically
+
 ## Product Boundary
 
 ### OpenClaw owns

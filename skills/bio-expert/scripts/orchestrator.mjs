@@ -1001,6 +1001,31 @@ function extractPathsFromMessage(message, cwd = process.cwd()) {
     return paths;
 }
 
+function extractPathHintsFromMessage(message, cwd = process.cwd()) {
+    const patterns = [
+        /`([^`]+)`/g,
+        /"([^"]+)"/g,
+        /'([^']+)'/g,
+        /((?:~\/|\/|\.\.?\/)[^\s,;:，。；：]+)/g,
+    ];
+    const hints = [];
+    const addHint = (rawPath) => {
+        const candidate = normalizeMessagePath(rawPath, cwd);
+        if (candidate && !hints.includes(candidate)) {
+            hints.push(candidate);
+        }
+    };
+
+    for (const pattern of patterns) {
+        let match;
+        while ((match = pattern.exec(message)) !== null) {
+            addHint(match[1] || match[0]);
+        }
+    }
+
+    return hints;
+}
+
 function detectConfirmationIntent(message) {
     const normalized = message.trim().toLowerCase();
     const confirmationPatterns = [
@@ -1008,6 +1033,86 @@ function detectConfirmationIntent(message) {
         /(确认执行|确认|开始跑|开始执行|继续执行|运行吧|开始吧)/,
     ];
     return confirmationPatterns.some((pattern) => pattern.test(normalized));
+}
+
+const BIOINFORMATICS_PATTERNS = [
+    { pattern: /(fastq|fq|bam|sam|cram|vcf|bcf|h5ad|mtx|loom)\b/i, reason: 'Mentioned a bioinformatics file format.' },
+    { pattern: /(rna-?seq|dna-?seq|atac-?seq|wgs|wes|chip-?seq|single cell|scrna|scRNA|bulk rna)/i, reason: 'Mentioned a sequencing assay or analysis family.' },
+    { pattern: /(单细胞|测序|转录组|变异|差异表达|生信|组学|表达矩阵|基因表达|比对|质控)/, reason: 'Used common Chinese bioinformatics terminology.' },
+    { pattern: /(analy[sz]e|analysis|workflow|pipeline|qc|quality control|differential expression|alignment|variant)/i, reason: 'Used common bioinformatics workflow language.' },
+];
+
+export function classifyAgentRouting(message, options = {}) {
+    const cwd = options.cwd ? path.resolve(options.cwd) : process.cwd();
+    const bridgeState = loadBridgeState(options.statePath);
+    const detectedPaths = extractPathsFromMessage(message, cwd);
+    const pathHints = extractPathHintsFromMessage(message, cwd);
+    const isConfirmation = detectConfirmationIntent(message);
+    const reasons = [];
+    const matchedSignals = [];
+    let score = 0;
+
+    if (isConfirmation) {
+        matchedSignals.push('confirmation_intent');
+        if (bridgeState?.sessionPath) {
+            score += 5;
+            reasons.push('Detected an explicit confirmation and found a resumable ClawOmics session.');
+        } else {
+            score += 1;
+            reasons.push('Detected an explicit confirmation, but there is no active ClawOmics session yet.');
+        }
+    }
+
+    if (detectedPaths.length > 0) {
+        score += 3;
+        matchedSignals.push('existing_path');
+        reasons.push(`Detected ${detectedPaths.length} existing path reference(s).`);
+    }
+
+    if (pathHints.length > 0) {
+        score += 2;
+        matchedSignals.push('path_hint');
+        reasons.push(`Detected ${pathHints.length} path-like reference(s) in the message.`);
+    }
+
+    for (const entry of BIOINFORMATICS_PATTERNS) {
+        if (entry.pattern.test(message)) {
+            score += 2;
+            matchedSignals.push(entry.reason);
+            reasons.push(entry.reason);
+        }
+    }
+
+    if (/(帮我|请|help me|please).*(分析|analy[sz]e|plan|workflow|pipeline)/i.test(message)) {
+        score += 2;
+        matchedSignals.push('analysis_request');
+        reasons.push('The message explicitly asks for analysis or planning help.');
+    }
+
+    const shouldHandle = (detectedPaths.length > 0 && score >= 3)
+        || (pathHints.length > 0 && score >= 4)
+        || (bridgeState?.sessionPath && isConfirmation)
+        || score >= 5;
+
+    const confidence = shouldHandle
+        ? (score >= 7 ? 'high' : 'medium')
+        : (score >= 3 ? 'low' : 'very-low');
+
+    return {
+        schemaVersion: AGENT_PROTOCOL_VERSION,
+        message,
+        shouldHandle,
+        routeTarget: shouldHandle ? 'clawomics_agent_turn' : 'ignore',
+        confidence,
+        score,
+        detectedPaths,
+        pathHints,
+        confirmationIntent: isConfirmation,
+        hasActiveBridgeState: Boolean(bridgeState?.sessionPath),
+        bridgeState: bridgeState || null,
+        reasons,
+        matchedSignals,
+    };
 }
 
 function inferGoalFromMessage(message, detectedPaths) {
@@ -2172,6 +2277,15 @@ if (import.meta.url === `file://${process.argv[1]}`) {
             emitAgentResult(message, handleAgentMessage(message, options), options);
             break;
         }
+        case 'route': {
+            const message = positional.join(' ').trim();
+            if (!message) {
+                console.error('Usage: node orchestrator.mjs route "<user-message>"');
+                process.exit(1);
+            }
+            printJson(classifyAgentRouting(message, options));
+            break;
+        }
         case 'plan': {
             const targetPath = positional[0] || '.';
             const profile = profileDataset(targetPath, options);
@@ -2221,6 +2335,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
             console.log('ClawOmics Bio-Expert Orchestrator');
             console.log('Usage:');
             console.log('  node orchestrator.mjs agent "<user-message>" [--session file] [--write] [--compact] [--output-dir dir]');
+            console.log('  node orchestrator.mjs route "<user-message>"');
             console.log('  node orchestrator.mjs analyze [path] [--goal "..."] [--write] [--output-dir dir] [--session file]');
             console.log('  node orchestrator.mjs profile [path] [--depth N] [--max-files N] [--write] [--output file] [--output-dir dir]');
             console.log('  node orchestrator.mjs plan [path] [--goal "..."] [--analysis-type TYPE] [--write] [--output file] [--output-dir dir]');

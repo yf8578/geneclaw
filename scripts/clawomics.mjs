@@ -43,6 +43,13 @@ const COMMANDS = {
         }
         runNodeScript(orchestrator, ['agent', ...messageArgs]);
     },
+    'route': (...messageArgs) => {
+        if (messageArgs.length === 0) {
+            COMMANDS.help();
+            process.exit(1);
+        }
+        runNodeScript(orchestrator, ['route', ...messageArgs]);
+    },
     'mcp': (...extraArgs) => {
         runNodeScript(mcpServer, extraArgs);
     },
@@ -91,27 +98,32 @@ Usage:
   clawomics <command> [options]
 
 Commands:
-  start               Check MCP readiness and start the chat bridge
-  setup               Initialize ClawOmics environment
-  identify [path]     Legacy format summary
-  agent "<message>"   Natural-language agent entrypoint
-  mcp                 Start the ClawOmics MCP server
-  mcp-doctor          Check whether MCP dependencies and files are ready
-  mcp-config          Print a ready-to-copy OpenClaw MCP config snippet
-  analyze [path]      Profile, partition, and plan in one step
-  profile [path]      Build a structured dataset profile
-  plan [path]         Generate an automatic analysis plan
-  partition [path]    Split mixed datasets into analysis units
-  run [path]          Execute the confirmation-gated run bootstrap
-  session <file>      Inspect a persisted agent session
-  demo                Generate demo data for testing
-  inventory           Update skill inventory
-  help                Show this help message
+  Primary:
+    start               Check MCP readiness and start the chat bridge
+    setup               Initialize ClawOmics environment
+    mcp-doctor          Check whether MCP dependencies and files are ready
+    mcp-config          Print a ready-to-copy OpenClaw MCP config snippet
+
+  Advanced / Debug:
+    identify [path]     Legacy format summary
+    agent "<message>"   Natural-language agent entrypoint
+    route "<message>"   Test whether a chat message should auto-route to ClawOmics
+    mcp                 Start the ClawOmics MCP server
+    analyze [path]      Profile, partition, and plan in one step
+    profile [path]      Build a structured dataset profile
+    plan [path]         Generate an automatic analysis plan
+    partition [path]    Split mixed datasets into analysis units
+    run [path]          Execute the confirmation-gated run bootstrap
+    session <file>      Inspect a persisted agent session
+    demo                Generate demo data for testing
+    inventory           Update skill inventory
+    help                Show this help message
 
 Examples:
   clawomics start
   clawomics setup
   clawomics agent "帮我分析 ./data"
+  clawomics route "/data/project1 里有测序数据，帮我分析"
   clawomics agent "帮我分析 ./data" --compact
   clawomics agent "确认执行"
   clawomics mcp-doctor

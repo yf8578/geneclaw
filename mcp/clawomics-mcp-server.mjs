@@ -4,6 +4,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
 import {
+    classifyAgentRouting,
     formatAgentEnvelope,
     getAgentSession,
     getBridgeState,
@@ -25,6 +26,33 @@ function makeTextResult(payload) {
         structuredContent: payload,
     };
 }
+
+server.registerTool(
+    'clawomics_should_route_message',
+    {
+        title: 'ClawOmics Route Decision',
+        description: `Decide whether an incoming chat message should be handed to ClawOmics.
+
+Use this before calling clawomics_agent_turn when the host needs automatic routing for Feishu, Telegram, or other mixed-purpose chat channels.`,
+        inputSchema: {
+            message: z.string().min(1).describe('The raw user message from the chat channel.'),
+            cwd: z.string().optional().describe('Optional working directory used to resolve relative paths.'),
+        },
+        annotations: {
+            readOnlyHint: true,
+            destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
+        },
+    },
+    async ({ message, cwd }) => {
+        const payload = classifyAgentRouting(message, { cwd });
+        return {
+            content: [{ type: 'text', text: JSON.stringify(payload, null, 2) }],
+            structuredContent: payload,
+        };
+    },
+);
 
 server.registerTool(
     'clawomics_agent_turn',
