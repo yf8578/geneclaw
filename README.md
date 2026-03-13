@@ -163,9 +163,10 @@ clawomics start
 
 Then switch to your chat client and talk to it directly.
 
-### 3. Advanced CLI and Debug Setup
+<details>
+  <summary><strong>Advanced CLI and Debug Setup</strong></summary>
 
-If you want the lower-level commands for debugging or local testing:
+  <p>If you want the lower-level commands for debugging or local testing:</p>
 
 ```bash
 cd clawomics
@@ -209,6 +210,8 @@ node scripts/clawomics.mjs partition demo_data --write
 # After the user confirms, bootstrap a runnable workspace
 node scripts/clawomics.mjs run demo_data --approve
 ```
+
+</details>
 
 ### 4. Initialize Resources
 Update the skill inventory to register all 200+ skills:
