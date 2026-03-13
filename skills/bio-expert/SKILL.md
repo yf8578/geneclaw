@@ -12,10 +12,13 @@ The master orchestrator for ClawOmics. It acts as the domain-specific workflow l
 
 ```bash
 # Natural-language entrypoint for OpenClaw-style turns
-node scripts/orchestrator.mjs agent "帮我分析 ./data" --write
+node scripts/orchestrator.mjs agent "帮我分析 ./data"
+
+# Compact OpenClaw-facing payload
+node scripts/orchestrator.mjs agent "帮我分析 ./data" --compact
 
 # Resume from confirmation
-node scripts/orchestrator.mjs agent "确认执行" --session ./data/agent_session.json
+node scripts/orchestrator.mjs agent "确认执行"
 
 # Build the full analysis bundle
 node scripts/orchestrator.mjs analyze ./data --write
@@ -73,6 +76,12 @@ Use a user message as the primary backend API for OpenClaw conversations.
 - `write` (boolean, optional): Persist planning artifacts when the turn routes into `analyze`.
 
 This tool should be preferred when OpenClaw wants a single natural-language bridge instead of manually dispatching `analyze` and `run`.
+
+When the conversation layer wants a slim payload, add `--compact` and consume:
+- `assistantReply`
+- `requiresConfirmation`
+- `sessionPath`
+- `nextAction`
 
 ### `build_dataset_partitions`
 For mixed directories, split detected files into analysis units and attach any assay-routing hints needed before detailed execution.

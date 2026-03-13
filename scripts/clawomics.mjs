@@ -10,6 +10,9 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const orchestrator = path.join(__dirname, '..', 'skills', 'bio-expert', 'scripts', 'orchestrator.mjs');
+const mcpServer = path.join(__dirname, '..', 'mcp', 'clawomics-mcp-server.mjs');
+const mcpDoctor = path.join(__dirname, 'mcp_doctor.mjs');
+const mcpConfig = path.join(__dirname, 'print_mcp_config.mjs');
 
 function runNodeScript(scriptPath, args = []) {
     execFileSync(process.execPath, [scriptPath, ...args], { stdio: 'inherit' });
@@ -20,6 +23,12 @@ function runBashScript(scriptPath) {
 }
 
 const COMMANDS = {
+    'start': () => {
+        runNodeScript(mcpDoctor);
+        console.log('');
+        console.log('ClawOmics chat bridge is ready. Keep this process running and talk to your MCP-enabled client.');
+        runNodeScript(mcpServer);
+    },
     'setup': () => {
         console.log('🦞 Running ClawOmics setup...');
         runBashScript(path.join(__dirname, 'setup.sh'));
@@ -33,6 +42,15 @@ const COMMANDS = {
             process.exit(1);
         }
         runNodeScript(orchestrator, ['agent', ...messageArgs]);
+    },
+    'mcp': (...extraArgs) => {
+        runNodeScript(mcpServer, extraArgs);
+    },
+    'mcp-doctor': () => {
+        runNodeScript(mcpDoctor);
+    },
+    'mcp-config': () => {
+        runNodeScript(mcpConfig);
     },
     'analyze': (targetPath = '.', ...extraArgs) => {
         runNodeScript(orchestrator, ['analyze', targetPath, ...extraArgs]);
@@ -73,9 +91,13 @@ Usage:
   clawomics <command> [options]
 
 Commands:
+  start               Check MCP readiness and start the chat bridge
   setup               Initialize ClawOmics environment
   identify [path]     Legacy format summary
   agent "<message>"   Natural-language agent entrypoint
+  mcp                 Start the ClawOmics MCP server
+  mcp-doctor          Check whether MCP dependencies and files are ready
+  mcp-config          Print a ready-to-copy OpenClaw MCP config snippet
   analyze [path]      Profile, partition, and plan in one step
   profile [path]      Build a structured dataset profile
   plan [path]         Generate an automatic analysis plan
@@ -87,9 +109,14 @@ Commands:
   help                Show this help message
 
 Examples:
+  clawomics start
   clawomics setup
-  clawomics agent "帮我分析 ./data" --write
-  clawomics agent "确认执行" --session ./data/agent_session.json
+  clawomics agent "帮我分析 ./data"
+  clawomics agent "帮我分析 ./data" --compact
+  clawomics agent "确认执行"
+  clawomics mcp-doctor
+  clawomics mcp-config
+  clawomics mcp
   clawomics analyze ./data --write
   clawomics profile ./data --write
   clawomics plan ./data --goal "Prepare a first-pass QC workflow" --write
@@ -100,6 +127,11 @@ Examples:
   clawomics demo
 
 For detailed documentation: https://github.com/yf8578/clawomics
+
+Notes:
+  start is the simplest daily entrypoint: run it once, then use your chat client.
+  agent remembers the latest conversation session automatically, so a later
+  "确认执行" turn does not need an explicit --session argument.
         `);
     }
 };

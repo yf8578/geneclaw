@@ -91,14 +91,25 @@ chmod +x scripts/*.mjs scripts/*.sh
 # Initialize environment
 node scripts/clawomics.mjs setup
 
+# Simplest daily entrypoint: start the chat bridge once
+node scripts/clawomics.mjs start
+
 # Generate demo data for testing
 node scripts/clawomics.mjs demo
 
 # Natural-language entrypoint
-node scripts/clawomics.mjs agent "demo_data 里有数据，帮我分析一下" --write
+node scripts/clawomics.mjs agent "demo_data 里有数据，帮我分析一下"
+
+# OpenClaw-friendly compact payload
+node scripts/clawomics.mjs agent "demo_data 里有数据，帮我分析一下" --compact
 
 # Confirm and create a run workspace
-node scripts/clawomics.mjs agent "确认执行" --session demo_data/agent_session.json
+node scripts/clawomics.mjs agent "确认执行"
+
+# MCP helper commands
+node scripts/clawomics.mjs mcp-doctor
+node scripts/clawomics.mjs mcp-config
+node scripts/clawomics.mjs mcp
 
 # Build profile + partitions + plan in one step
 node scripts/clawomics.mjs analyze demo_data --write
@@ -154,22 +165,25 @@ ClawOmics is designed to stay simple inside OpenClaw:
 - **OpenClaw provides the model layer** for planning and explanation.
 - **ClawOmics provides the dataset profiler and workflow scaffolding**.
 - **No separate LLM configuration is required** for the first-pass planning flow in this repository.
+- **The recommended production integration is MCP**, so users only interact through the chat box.
 
 ### 5.1 Intended OpenClaw Flow
 
 1. User tells OpenClaw where the data live.
-2. OpenClaw calls `agent "<user-message>" --write` or routes equivalently to `analyze`.
+2. OpenClaw calls `agent "<user-message>"` or `agent "<user-message>" --compact`.
 3. ClawOmics returns profile, partitions, and a first-pass plan.
 4. User confirms execution.
-5. OpenClaw calls `agent "确认执行" --session <agent_session.json>` or routes equivalently to `run --approve`.
+5. OpenClaw calls `agent "确认执行"` and ClawOmics resumes from the persisted bridge state automatically.
 6. ClawOmics creates a tracked run workspace and command templates.
 
-`agent_session.json` is the durable bridge between those turns. OpenClaw can reload it instead of relying on the model to remember hidden workflow state.
+`agent_session.json` is the durable per-dataset state, and `.clawomics/openclaw_context.json` stores the latest conversation bridge so confirmation turns do not need to pass extra parameters.
 
 ### 5.2 Framework Docs
 
 - [docs/PRODUCT_FRAMEWORK.md](./docs/PRODUCT_FRAMEWORK.md): product positioning, scope, boundaries, and principles
 - [docs/AGENT_PROTOCOL.md](./docs/AGENT_PROTOCOL.md): state machine, OpenClaw flow, and artifact contract
+- [docs/OPENCLAW_SYSTEM_PROMPT.md](./docs/OPENCLAW_SYSTEM_PROMPT.md): ready-to-use system prompt template for the OpenClaw conversation layer
+- [docs/OPENCLAW_MCP_SETUP.md](./docs/OPENCLAW_MCP_SETUP.md): MCP-based integration guide for the cleanest chat-first experience
 
 ---
 
@@ -181,6 +195,8 @@ ClawOmics is designed to stay simple inside OpenClaw:
 - **[`docs/PRODUCT_FRAMEWORK.md`](./docs/PRODUCT_FRAMEWORK.md)**: Product definition for the ClawOmics agent.
 - **[`docs/AGENT_PROTOCOL.md`](./docs/AGENT_PROTOCOL.md)**: Runtime contract between OpenClaw and ClawOmics.
 - **[`docs/OPENCLAW_INTEGRATION.md`](./docs/OPENCLAW_INTEGRATION.md)**: Practical routing guide for OpenClaw conversation logic.
+- **[`docs/OPENCLAW_SYSTEM_PROMPT.md`](./docs/OPENCLAW_SYSTEM_PROMPT.md)**: Prompt template for the OpenClaw integration layer.
+- **[`docs/OPENCLAW_MCP_SETUP.md`](./docs/OPENCLAW_MCP_SETUP.md)**: MCP server setup for direct OpenClaw tool integration.
 - **[`docs/INTEGRATION_PLAN.md`](./docs/INTEGRATION_PLAN.md)**: Future capability expansion roadmap.
 
 ---

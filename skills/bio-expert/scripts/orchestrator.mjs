@@ -13,6 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = process.env.CLAWOMICS_HOME || path.resolve(__dirname, '..', '..', '..');
 const SKILLS_DIR = path.join(PROJECT_ROOT, 'skills');
 const RESOURCES_FILE = path.join(PROJECT_ROOT, 'docs', 'RESOURCES.md');
+const BRIDGE_STATE_FILE = path.join(PROJECT_ROOT, '.clawomics', 'openclaw_context.json');
 
 const DEFAULT_DEPTH = 4;
 const DEFAULT_MAX_FILES = 500;
@@ -1792,6 +1793,46 @@ function writeSessionArtifact(inputPath, session, outputPath, outputDir) {
     return writeJsonArtifact('session', inputPath, session, outputPath, outputDir);
 }
 
+function loadBridgeState(statePath = BRIDGE_STATE_FILE) {
+    const absolutePath = path.resolve(statePath);
+    if (!fs.existsSync(absolutePath)) {
+        return null;
+    }
+
+    const raw = fs.readFileSync(absolutePath, 'utf8');
+    return JSON.parse(raw);
+}
+
+export function getBridgeState(statePath) {
+    return loadBridgeState(statePath);
+}
+
+function writeBridgeState(record, statePath = BRIDGE_STATE_FILE) {
+    const absolutePath = path.resolve(statePath);
+    fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+    fs.writeFileSync(absolutePath, `${JSON.stringify(record, null, 2)}\n`);
+    return absolutePath;
+}
+
+function updateBridgeStateFromAgentEnvelope(envelope, options = {}) {
+    const response = envelope.response || {};
+    const session = response.session || {};
+    if (!session.sessionPath) {
+        return null;
+    }
+
+    return writeBridgeState({
+        schemaVersion: AGENT_PROTOCOL_VERSION,
+        updatedAt: new Date().toISOString(),
+        inputPath: response.inputPath || session.inputPath,
+        datasetClass: response.datasetClass || session.datasetClass,
+        plannedAnalysisType: response.plannedAnalysisType || response.analysisType || session.plannedAnalysisType,
+        sessionPath: session.sessionPath,
+        runDirectory: response.runDirectory || session.currentRunDirectory || null,
+        manifestPath: response.artifacts?.manifest || null,
+    }, options.statePath);
+}
+
 function loadSession(sessionPath) {
     const absolutePath = path.resolve(sessionPath);
     if (!fs.existsSync(absolutePath)) {
@@ -1813,7 +1854,11 @@ export function getAgentSession(sessionPath) {
 export function handleAgentMessage(message, options = {}) {
     const cwd = options.cwd ? path.resolve(options.cwd) : process.cwd();
     const detectedPaths = extractPathsFromMessage(message, cwd);
-    const sessionPath = options.session || (detectedPaths[0] ? path.join(detectedPaths[0], 'agent_session.json') : null);
+    const bridgeState = loadBridgeState(options.statePath);
+    const sessionPath = options.session
+        || (detectedPaths[0] ? path.join(detectedPaths[0], 'agent_session.json') : null)
+        || bridgeState?.sessionPath
+        || null;
     const isConfirmation = detectConfirmationIntent(message);
 
     if (isConfirmation) {
@@ -1824,7 +1869,7 @@ export function handleAgentMessage(message, options = {}) {
                 session: sessionPath,
                 approve: true,
             });
-            return {
+            const envelope = {
                 schemaVersion: AGENT_PROTOCOL_VERSION,
                 command: 'agent',
                 mode: 'run',
@@ -1832,6 +1877,8 @@ export function handleAgentMessage(message, options = {}) {
                 detectedPaths,
                 response: runResult,
             };
+            updateBridgeStateFromAgentEnvelope(envelope, options);
+            return envelope;
         }
 
         return {
@@ -1863,7 +1910,22 @@ export function handleAgentMessage(message, options = {}) {
             cwd,
             session: sessionPath,
         });
-        return {
+        if (analyzeResult.error) {
+            return {
+                schemaVersion: AGENT_PROTOCOL_VERSION,
+                command: 'agent',
+                mode: 'error',
+                userMessage: message,
+                detectedPaths,
+                response: analyzeResult,
+            };
+        }
+        const persistedSessionPath = writeSessionArtifact(targetPath, analyzeResult.session, options.session, options.outputDir);
+        analyzeResult.session = {
+            ...analyzeResult.session,
+            sessionPath: persistedSessionPath,
+        };
+        const envelope = {
             schemaVersion: AGENT_PROTOCOL_VERSION,
             command: 'agent',
             mode: 'analyze',
@@ -1871,6 +1933,8 @@ export function handleAgentMessage(message, options = {}) {
             detectedPaths,
             response: analyzeResult,
         };
+        updateBridgeStateFromAgentEnvelope(envelope, options);
+        return envelope;
     }
 
     return {
@@ -1960,6 +2024,8 @@ function parseCliArguments(args) {
             index += 1;
         } else if (token === '--approve') {
             options.approve = true;
+        } else if (token === '--compact') {
+            options.compact = true;
         } else {
             positional.push(token);
         }
@@ -2003,8 +2069,61 @@ function emitAnalyzeResult(inputPath, value, options) {
     console.error(`Wrote session artifact to ${sessionPath}`);
 }
 
+function buildCompactAgentPayload(value, options = {}) {
+    const response = value.response || {};
+    const conversation = response.conversation || {};
+    const primaryAction = response.actionHints?.primary || null;
+    const secondaryActions = response.actionHints?.secondary || [];
+    const assistantReply = [
+        conversation.assistantMessage,
+        conversation.confirmationPrompt,
+    ].filter(Boolean).join('\n\n');
+
+    const artifacts = {};
+    if (response.artifacts?.manifest) {
+        artifacts.manifest = response.artifacts.manifest;
+    }
+    if (response.inputPath && value.mode === 'analyze' && (options.write || options.output)) {
+        artifacts.bundle = getDefaultArtifactPath('analyze', response.inputPath, options.outputDir);
+        artifacts.profile = getDefaultArtifactPath('profile', response.inputPath, options.outputDir);
+        artifacts.partitions = getDefaultArtifactPath('partition', response.inputPath, options.outputDir);
+        artifacts.plan = getDefaultArtifactPath('plan', response.inputPath, options.outputDir);
+    }
+    if (response.session?.sessionPath) {
+        artifacts.session = response.session.sessionPath;
+    }
+
+    return {
+        schemaVersion: AGENT_PROTOCOL_VERSION,
+        command: value.command,
+        mode: value.mode,
+        userMessage: value.userMessage,
+        detectedPaths: value.detectedPaths || [],
+        assistantReply,
+        assistantMessage: conversation.assistantMessage,
+        confirmationPrompt: conversation.confirmationPrompt,
+        suggestedUserReplies: conversation.suggestedUserReplies || [],
+        requiresConfirmation: Boolean(conversation.requiresConfirmation),
+        canRun: Boolean(conversation.canRun),
+        agentState: response.agentState,
+        lifecyclePhase: response.lifecyclePhase,
+        inputPath: response.inputPath,
+        plannedAnalysisType: response.plannedAnalysisType || response.analysisType,
+        sessionPath: response.session?.sessionPath,
+        runDirectory: response.runDirectory,
+        nextAction: primaryAction,
+        followUps: secondaryActions,
+        artifacts,
+    };
+}
+
+export function formatAgentEnvelope(value, options = {}) {
+    return buildCompactAgentPayload(value, options);
+}
+
 function emitAgentResult(message, value, options) {
-    printJson(value);
+    const output = options.compact ? buildCompactAgentPayload(value, options) : value;
+    printJson(output);
 
     if (value.mode !== 'analyze' || !options.write) {
         return;
@@ -2047,7 +2166,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         case 'agent': {
             const message = positional.join(' ').trim();
             if (!message) {
-                console.error('Usage: node orchestrator.mjs agent "<user-message>" [--session file] [--write]');
+                console.error('Usage: node orchestrator.mjs agent "<user-message>" [--session file] [--write] [--compact]');
                 process.exit(1);
             }
             emitAgentResult(message, handleAgentMessage(message, options), options);
@@ -2101,7 +2220,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         default:
             console.log('ClawOmics Bio-Expert Orchestrator');
             console.log('Usage:');
-            console.log('  node orchestrator.mjs agent "<user-message>" [--session file] [--write] [--output-dir dir]');
+            console.log('  node orchestrator.mjs agent "<user-message>" [--session file] [--write] [--compact] [--output-dir dir]');
             console.log('  node orchestrator.mjs analyze [path] [--goal "..."] [--write] [--output-dir dir] [--session file]');
             console.log('  node orchestrator.mjs profile [path] [--depth N] [--max-files N] [--write] [--output file] [--output-dir dir]');
             console.log('  node orchestrator.mjs plan [path] [--goal "..."] [--analysis-type TYPE] [--write] [--output file] [--output-dir dir]');

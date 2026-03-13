@@ -29,6 +29,7 @@ Purpose:
 Behavior:
 - Detect a dataset path from natural language and route into planning.
 - Detect explicit confirmation intent and route into execution.
+- Persist the latest session bridge so follow-up confirmation turns do not need to pass `--session`.
 - Return `mode = analyze | run | needs_path | needs_session`.
 
 Expected outputs:
@@ -73,14 +74,14 @@ Expected state:
 User says a path exists and asks for analysis.
 
 OpenClaw should:
-- preferably call `agent "<user-message>" --write`
+- preferably call `agent "<user-message>"`
 - read `response.conversation.assistantMessage`
 - show `response.conversation.confirmationPrompt`
 
 ### Turn 2: user confirmation
 
 If the user confirms explicitly, OpenClaw should:
-- call `agent "<confirmation-message>" --session <agent_session.json>`
+- call `agent "<confirmation-message>"`
 - read `response.conversation.assistantMessage`
 - offer to inspect generated artifacts or continue execution
 

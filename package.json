@@ -1,0 +1,17 @@
+{
+  "name": "clawomics",
+  "version": "1.2.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "clawomics": "./scripts/clawomics.mjs"
+  },
+  "description": "Bioinformatics agent framework and MCP bridge for OpenClaw",
+  "scripts": {
+    "mcp": "node mcp/clawomics-mcp-server.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.4",
+    "zod": "^3.24.1"
+  }
+}

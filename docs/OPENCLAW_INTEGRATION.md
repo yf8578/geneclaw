@@ -11,10 +11,24 @@ Use ClawOmics as the bioinformatics workflow layer behind a natural-language Ope
 For a dialogue-first OpenClaw integration, call:
 
 ```bash
-node scripts/clawomics.mjs agent "<user-message>" --write
+node scripts/clawomics.mjs agent "<user-message>"
 ```
 
-This lets ClawOmics detect paths, infer whether the turn is planning or confirmation, and return a stable conversation payload.
+This lets ClawOmics detect paths, infer whether the turn is planning or confirmation, and return a stable conversation payload. The agent bridge also persists the latest session automatically, so a later confirmation turn does not need an explicit `--session`.
+
+If the OpenClaw side only wants a slim reply contract, prefer:
+
+```bash
+node scripts/clawomics.mjs agent "<user-message>" --compact
+```
+
+`--compact` returns an assistant-ready payload with:
+
+- `assistantReply`
+- `requiresConfirmation`
+- `sessionPath`
+- `nextAction`
+- `artifacts`
 
 ### When `agent` should enter planning mode
 
@@ -46,21 +60,22 @@ If confirmation is ambiguous, stay in planning mode.
 ### Turn A: intake
 
 1. Detect a path in the user message.
-2. Call `agent "<user-message>" --write`.
+2. Call `agent "<user-message>"`.
+   If you do not need the full planning bundle echoed in stdout, use `--compact`.
 3. Read:
-   - `response.conversation.assistantMessage`
-   - `response.conversation.confirmationPrompt`
-   - `response.session.sessionPath`
+   - `assistantReply` or `response.conversation.*`
+   - `sessionPath` or `response.session.sessionPath`
 4. Reply to the user with the planning summary and ask for confirmation.
 
 ### Turn B: confirmation
 
 1. Detect explicit confirmation.
-2. Call `agent "<confirmation-message>" --session <agent_session.json>`.
+2. Call `agent "<confirmation-message>"`.
+   If your wrapper expects a slim turn payload, add `--compact`.
 3. Read:
-   - `response.conversation.assistantMessage`
-   - `response.artifacts.manifest`
-   - `response.actionHints`
+   - `assistantReply` or `response.conversation.assistantMessage`
+   - `artifacts.manifest`
+   - `nextAction`
 4. Reply with the created run workspace and what can be inspected next.
 
 ### Direct command fallback
@@ -90,9 +105,9 @@ node scripts/clawomics.mjs session /path/to/agent_session.json
 
 ```text
 User: "/data/tumor_wgs has data, help me analyze it"
-OpenClaw -> agent "/data/tumor_wgs has data, help me analyze it" --write
+OpenClaw -> agent "/data/tumor_wgs has data, help me analyze it"
 OpenClaw <- mode=analyze, response.agentState=awaiting_confirmation
 User: "确认执行"
-OpenClaw -> agent "确认执行" --session /data/tumor_wgs/agent_session.json
+OpenClaw -> agent "确认执行"
 OpenClaw <- mode=run, response.agentState=prepared
 ```
