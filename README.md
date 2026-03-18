@@ -313,16 +313,22 @@ For a real OpenClaw / Feishu / Telegram deployment, prefer letting the MCP host 
 
 ## 👥 Contributors
 
-<p>
-  <a href="https://github.com/yf8578">
-    <img src="https://github.com/yf8578.png" width="80" alt="yf8578"/><br />
-    <sub><b>yf8578</b></sub>
-  </a>
-  <a href="https://github.com/puppy-0000">
-    <img src="https://github.com/puppy-0000.png" width="80" alt="puppy-0000"/><br />
-    <sub><b>puppy-0000</b></sub>
-  </a>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/yf8578">
+        <img src="https://github.com/yf8578.png" width="80" alt="yf8578" /><br />
+        <sub><b>yf8578</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/puppy-0000">
+        <img src="https://github.com/puppy-0000.png" width="80" alt="puppy-0000" /><br />
+        <sub><b>puppy-0000</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
 ---
 
