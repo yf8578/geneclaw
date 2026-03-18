@@ -14,6 +14,7 @@ const PROJECT_ROOT = process.env.CLAWOMICS_HOME || path.resolve(__dirname, '..',
 const SKILLS_DIR = path.join(PROJECT_ROOT, 'skills');
 const RESOURCES_FILE = path.join(PROJECT_ROOT, 'docs', 'RESOURCES.md');
 const BRIDGE_STATE_FILE = path.join(PROJECT_ROOT, '.clawomics', 'openclaw_context.json');
+const BRIDGE_STATE_DIR = path.join(PROJECT_ROOT, '.clawomics', 'contexts');
 
 const DEFAULT_DEPTH = 4;
 const DEFAULT_MAX_FILES = 500;
@@ -1044,7 +1045,7 @@ const BIOINFORMATICS_PATTERNS = [
 
 export function classifyAgentRouting(message, options = {}) {
     const cwd = options.cwd ? path.resolve(options.cwd) : process.cwd();
-    const bridgeState = loadBridgeState(options.statePath);
+    const bridgeState = loadBridgeState(options);
     const detectedPaths = extractPathsFromMessage(message, cwd);
     const pathHints = extractPathHintsFromMessage(message, cwd);
     const isConfirmation = detectConfirmationIntent(message);
@@ -1101,6 +1102,7 @@ export function classifyAgentRouting(message, options = {}) {
     return {
         schemaVersion: AGENT_PROTOCOL_VERSION,
         message,
+        contextKey: normalizeContextKey(options.contextKey),
         shouldHandle,
         routeTarget: shouldHandle ? 'clawomics_agent_turn' : 'ignore',
         confidence,
@@ -1109,6 +1111,7 @@ export function classifyAgentRouting(message, options = {}) {
         pathHints,
         confirmationIntent: isConfirmation,
         hasActiveBridgeState: Boolean(bridgeState?.sessionPath),
+        bridgeStatePath: bridgeState?.bridgeStatePath || resolveBridgeStatePath(options),
         bridgeState: bridgeState || null,
         reasons,
         matchedSignals,
@@ -1898,25 +1901,72 @@ function writeSessionArtifact(inputPath, session, outputPath, outputDir) {
     return writeJsonArtifact('session', inputPath, session, outputPath, outputDir);
 }
 
-function loadBridgeState(statePath = BRIDGE_STATE_FILE) {
-    const absolutePath = path.resolve(statePath);
+function normalizeContextKey(contextKey = 'default') {
+    const normalized = String(contextKey || 'default').trim().toLowerCase();
+    const slug = normalized.replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '');
+    return slug || 'default';
+}
+
+function resolveBridgeStatePath(options = {}) {
+    if (options.statePath) {
+        return path.resolve(options.statePath);
+    }
+
+    const contextKey = normalizeContextKey(options.contextKey);
+    if (contextKey === 'default') {
+        return BRIDGE_STATE_FILE;
+    }
+
+    return path.join(BRIDGE_STATE_DIR, `${contextKey}.json`);
+}
+
+function loadBridgeState(options = {}) {
+    const absolutePath = resolveBridgeStatePath(options);
     if (!fs.existsSync(absolutePath)) {
         return null;
     }
 
     const raw = fs.readFileSync(absolutePath, 'utf8');
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    return {
+        ...parsed,
+        bridgeStatePath: absolutePath,
+        contextKey: normalizeContextKey(options.contextKey || parsed.contextKey || 'default'),
+    };
 }
 
-export function getBridgeState(statePath) {
-    return loadBridgeState(statePath);
+export function clearBridgeState(options = {}) {
+    const absolutePath = resolveBridgeStatePath(options);
+    if (!fs.existsSync(absolutePath)) {
+        return {
+            cleared: false,
+            bridgeStatePath: absolutePath,
+            contextKey: normalizeContextKey(options.contextKey),
+            message: 'No bridge state file existed for this context.',
+        };
+    }
+
+    fs.unlinkSync(absolutePath);
+    return {
+        cleared: true,
+        bridgeStatePath: absolutePath,
+        contextKey: normalizeContextKey(options.contextKey),
+        message: 'Bridge state cleared successfully.',
+    };
 }
 
-function writeBridgeState(record, statePath = BRIDGE_STATE_FILE) {
-    const absolutePath = path.resolve(statePath);
+function writeBridgeState(record, options = {}) {
+    const absolutePath = resolveBridgeStatePath(options);
     fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
-    fs.writeFileSync(absolutePath, `${JSON.stringify(record, null, 2)}\n`);
+    fs.writeFileSync(absolutePath, `${JSON.stringify({
+        ...record,
+        contextKey: normalizeContextKey(options.contextKey || record.contextKey),
+    }, null, 2)}\n`);
     return absolutePath;
+}
+
+export function getBridgeState(options) {
+    return loadBridgeState(typeof options === 'string' ? { statePath: options } : options);
 }
 
 function updateBridgeStateFromAgentEnvelope(envelope, options = {}) {
@@ -1929,13 +1979,14 @@ function updateBridgeStateFromAgentEnvelope(envelope, options = {}) {
     return writeBridgeState({
         schemaVersion: AGENT_PROTOCOL_VERSION,
         updatedAt: new Date().toISOString(),
+        contextKey: normalizeContextKey(options.contextKey),
         inputPath: response.inputPath || session.inputPath,
         datasetClass: response.datasetClass || session.datasetClass,
         plannedAnalysisType: response.plannedAnalysisType || response.analysisType || session.plannedAnalysisType,
         sessionPath: session.sessionPath,
         runDirectory: response.runDirectory || session.currentRunDirectory || null,
         manifestPath: response.artifacts?.manifest || null,
-    }, options.statePath);
+    }, options);
 }
 
 function loadSession(sessionPath) {
@@ -1959,7 +2010,7 @@ export function getAgentSession(sessionPath) {
 export function handleAgentMessage(message, options = {}) {
     const cwd = options.cwd ? path.resolve(options.cwd) : process.cwd();
     const detectedPaths = extractPathsFromMessage(message, cwd);
-    const bridgeState = loadBridgeState(options.statePath);
+    const bridgeState = loadBridgeState(options);
     const sessionPath = options.session
         || (detectedPaths[0] ? path.join(detectedPaths[0], 'agent_session.json') : null)
         || bridgeState?.sessionPath
@@ -2131,6 +2182,9 @@ function parseCliArguments(args) {
             options.approve = true;
         } else if (token === '--compact') {
             options.compact = true;
+        } else if (token === '--context-key') {
+            options.contextKey = args[index + 1];
+            index += 1;
         } else {
             positional.push(token);
         }
@@ -2202,6 +2256,7 @@ function buildCompactAgentPayload(value, options = {}) {
         schemaVersion: AGENT_PROTOCOL_VERSION,
         command: value.command,
         mode: value.mode,
+        contextKey: normalizeContextKey(options.contextKey),
         userMessage: value.userMessage,
         detectedPaths: value.detectedPaths || [],
         assistantReply,
@@ -2215,6 +2270,7 @@ function buildCompactAgentPayload(value, options = {}) {
         inputPath: response.inputPath,
         plannedAnalysisType: response.plannedAnalysisType || response.analysisType,
         sessionPath: response.session?.sessionPath,
+        bridgeStatePath: resolveBridgeStatePath(options),
         runDirectory: response.runDirectory,
         nextAction: primaryAction,
         followUps: secondaryActions,
@@ -2271,7 +2327,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         case 'agent': {
             const message = positional.join(' ').trim();
             if (!message) {
-                console.error('Usage: node orchestrator.mjs agent "<user-message>" [--session file] [--write] [--compact]');
+                console.error('Usage: node orchestrator.mjs agent "<user-message>" [--session file] [--context-key key] [--write] [--compact]');
                 process.exit(1);
             }
             emitAgentResult(message, handleAgentMessage(message, options), options);
@@ -2280,10 +2336,14 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         case 'route': {
             const message = positional.join(' ').trim();
             if (!message) {
-                console.error('Usage: node orchestrator.mjs route "<user-message>"');
+                console.error('Usage: node orchestrator.mjs route "<user-message>" [--context-key key]');
                 process.exit(1);
             }
             printJson(classifyAgentRouting(message, options));
+            break;
+        }
+        case 'clear-context': {
+            printJson(clearBridgeState(options));
             break;
         }
         case 'plan': {
@@ -2334,8 +2394,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
         default:
             console.log('ClawOmics Bio-Expert Orchestrator');
             console.log('Usage:');
-            console.log('  node orchestrator.mjs agent "<user-message>" [--session file] [--write] [--compact] [--output-dir dir]');
-            console.log('  node orchestrator.mjs route "<user-message>"');
+            console.log('  node orchestrator.mjs agent "<user-message>" [--session file] [--context-key key] [--write] [--compact] [--output-dir dir]');
+            console.log('  node orchestrator.mjs route "<user-message>" [--context-key key]');
+            console.log('  node orchestrator.mjs clear-context [--context-key key]');
             console.log('  node orchestrator.mjs analyze [path] [--goal "..."] [--write] [--output-dir dir] [--session file]');
             console.log('  node orchestrator.mjs profile [path] [--depth N] [--max-files N] [--write] [--output file] [--output-dir dir]');
             console.log('  node orchestrator.mjs plan [path] [--goal "..."] [--analysis-type TYPE] [--write] [--output file] [--output-dir dir]');

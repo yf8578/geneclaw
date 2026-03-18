@@ -6,13 +6,15 @@ Use ClawOmics as the bioinformatics workflow layer behind a natural-language Ope
 
 ## Easiest Operator Flow
 
-If ClawOmics has already been linked as a global command, the intended daily operator flow is:
+For local testing, if ClawOmics has already been linked as a global command, the intended operator flow is:
 
 ```bash
 clawomics start
 ```
 
 After that, the operator should stop using ClawOmics commands directly and continue only through the chat interface.
+
+For real host integration, prefer MCP tool calls over a manually started shell. The host should auto-spawn the stdio server when needed.
 
 ## Recommended Routing
 
@@ -25,6 +27,8 @@ node scripts/clawomics.mjs agent "<user-message>"
 ```
 
 This lets ClawOmics detect paths, infer whether the turn is planning or confirmation, and return a stable conversation payload. The agent bridge also persists the latest session automatically, so a later confirmation turn does not need an explicit `--session`.
+
+When multiple chat threads share the same host, always pass a stable `--context-key` or MCP `context_key` so one thread does not resume another thread's session.
 
 If the OpenClaw side only wants a slim reply contract, prefer:
 
@@ -104,6 +108,12 @@ OpenClaw should preserve:
 - latest `run_manifest.json` path
 
 This allows the conversation layer to survive model context loss or long-running threads.
+
+If the host thread should stop auto-resuming its previous dataset, clear only the lightweight bridge state:
+
+```bash
+node scripts/clawomics.mjs clear-context --context-key <chat-thread-id>
+```
 
 If needed, the session can be reloaded explicitly with:
 

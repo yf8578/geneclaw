@@ -19,9 +19,11 @@ clawomics start
 ```
 
 After that:
-- keep the process alive
+- keep the process alive for local testing
 - open your MCP-enabled chat client
 - only talk in the chat box
+
+In a normal MCP host deployment, prefer letting the host auto-spawn the server instead of running a separate long-lived shell yourself.
 
 ## Deployment View
 
@@ -51,7 +53,7 @@ If the client is already configured to use this MCP server, the easiest way to w
 node scripts/clawomics.mjs start
 ```
 
-Run it once, keep it alive, then do the rest in the chat box.
+Run it once for local testing, then do the rest in the chat box.
 
 ## Start the MCP Server
 
@@ -70,6 +72,7 @@ This launches the local stdio MCP server:
 - server name: `clawomics-mcp-server`
 - route tool: `clawomics_should_route_message`
 - primary tool: `clawomics_agent_turn`
+- cleanup tool: `clawomics_clear_context`
 
 ## Suggested OpenClaw MCP Registration
 
@@ -101,6 +104,14 @@ Examples:
 
 The tool persists bridge state automatically, so the confirmation turn can resume without a visible session argument.
 
+When your host serves multiple chat threads, also pass a stable `context_key` such as:
+
+- `feishu-chat-123`
+- `telegram-user-42`
+- `openclaw-thread-project1`
+
+That key isolates the remembered bridge state per conversation.
+
 ### Recommended routing tool
 
 Before calling the primary tool in a mixed-purpose chat channel, ask:
@@ -113,6 +124,7 @@ This helps OpenClaw decide whether a Feishu or Telegram message should be handed
 
 - `clawomics_get_latest_context`
 - `clawomics_get_session`
+- `clawomics_clear_context`
 
 ## Conversation Policy
 

@@ -65,6 +65,8 @@ The system should then:
 
 In practice, the dialogue-facing backend entry should be the MCP tool `clawomics_agent_turn`, with `agent_session.json` and the local bridge state carrying durable state across turns.
 
+When one host serves multiple chats, the bridge state should be isolated per conversation via a stable `context_key`.
+
 The system should not depend on the model remembering hidden internal state between turns. Durable session artifacts should carry that state.
 
 ## Primary User Scenarios

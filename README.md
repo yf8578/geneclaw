@@ -34,6 +34,8 @@ clawomics start
 
 After `clawomics start`, keep that process running and do the rest in your MCP-enabled chat client.
 
+If your MCP client already knows how to spawn `clawomics-mcp-server`, you usually do not need `clawomics start` at all. In production, the host should auto-launch the server on demand.
+
 The intended end-user flow is:
 - start ClawOmics once
 - open OpenClaw / Codex / another MCP-capable client
@@ -57,6 +59,8 @@ The intended end-user flow is:
   <summary><strong>v1.2</strong></summary>
 
   <ul>
+    <li><strong>🧵 Context Isolation</strong>: chat hosts can now pass <code>context_key</code> so Feishu, Telegram, and other concurrent threads do not share the same remembered bridge state</li>
+    <li><strong>🧹 Context Cleanup</strong>: new <code>clear-context</code> CLI and <code>clawomics_clear_context</code> MCP tool to drop stale lightweight bridge state safely</li>
     <li><strong>🔧 CLI Interface</strong>: New <code>clawomics.mjs</code> CLI for one-command operations</li>
     <li><strong>🧰 Global Command Entry</strong>: <code>npm link</code> now exposes a reusable <code>clawomics</code> command</li>
     <li><strong>🪄 One-Command Startup</strong>: <code>clawomics start</code> checks MCP readiness and starts the chat bridge</li>
@@ -101,7 +105,7 @@ graph TD
     Orchestrator --> Partitions["dataset_partitions.json"]
     Orchestrator --> Plan["analysis_plan.json"]
     Orchestrator --> Session["agent_session.json"]
-    Orchestrator --> Bridge[".clawomics/openclaw_context.json"]
+    Orchestrator --> Bridge[".clawomics/openclaw_context.json or .clawomics/contexts/<context-key>.json"]
 
     Orchestrator --> Skills["skills/ registry"]
     Skills --> S1["scanpy / scvi-tools"]
@@ -261,13 +265,15 @@ ClawOmics is designed to stay simple inside OpenClaw:
 - **No separate LLM configuration is required** for the first-pass planning flow in this repository.
 - **The recommended production integration is MCP**, so users only interact through the chat box.
 
-For day-to-day use, the intended operator flow is:
+For manual local testing, the intended operator flow is:
 
 ```bash
 clawomics start
 ```
 
 After that, the rest should happen inside the chat client rather than through more ClawOmics commands.
+
+For a real OpenClaw / Feishu / Telegram deployment, prefer letting the MCP host auto-spawn the server instead of keeping a separate terminal alive.
 
 ### 6.1 Intended OpenClaw Flow
 
@@ -278,7 +284,7 @@ After that, the rest should happen inside the chat client rather than through mo
 5. OpenClaw calls `agent "确认执行"` and ClawOmics resumes from the persisted bridge state automatically.
 6. ClawOmics creates a tracked run workspace and command templates.
 
-`agent_session.json` is the durable per-dataset state, and `.clawomics/openclaw_context.json` stores the latest conversation bridge so confirmation turns do not need to pass extra parameters.
+`agent_session.json` is the durable per-dataset state. The lightweight conversation bridge is stored in `.clawomics/openclaw_context.json` by default, or `.clawomics/contexts/<context-key>.json` when the host passes a stable chat-specific `context_key`.
 
 ### 6.2 Framework Docs
 
@@ -302,6 +308,21 @@ After that, the rest should happen inside the chat client rather than through mo
 - **[`docs/OPENCLAW_MCP_SETUP.md`](./docs/OPENCLAW_MCP_SETUP.md)**: MCP server setup for direct OpenClaw tool integration.
 - **[`docs/CHAT_CHANNEL_ROUTING.md`](./docs/CHAT_CHANNEL_ROUTING.md)**: Auto-routing strategy for Feishu, Telegram, and similar chat channels.
 - **[`docs/INTEGRATION_PLAN.md`](./docs/INTEGRATION_PLAN.md)**: Future capability expansion roadmap.
+
+---
+
+## 👥 Contributors
+
+<p>
+  <a href="https://github.com/yf8578">
+    <img src="https://github.com/yf8578.png" width="80" alt="yf8578"/><br />
+    <sub><b>yf8578</b></sub>
+  </a>
+  <a href="https://github.com/puppy-0000">
+    <img src="https://github.com/puppy-0000.png" width="80" alt="puppy-0000"/><br />
+    <sub><b>puppy-0000</b></sub>
+  </a>
+</p>
 
 ---
 

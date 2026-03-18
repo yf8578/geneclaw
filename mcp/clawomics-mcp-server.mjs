@@ -5,6 +5,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 import {
     classifyAgentRouting,
+    clearBridgeState,
     formatAgentEnvelope,
     getAgentSession,
     getBridgeState,
@@ -37,6 +38,7 @@ Use this before calling clawomics_agent_turn when the host needs automatic routi
         inputSchema: {
             message: z.string().min(1).describe('The raw user message from the chat channel.'),
             cwd: z.string().optional().describe('Optional working directory used to resolve relative paths.'),
+            context_key: z.string().optional().describe('Stable host-side conversation key, for example feishu-chat-123 or telegram-user-42.'),
         },
         annotations: {
             readOnlyHint: true,
@@ -45,8 +47,8 @@ Use this before calling clawomics_agent_turn when the host needs automatic routi
             openWorldHint: false,
         },
     },
-    async ({ message, cwd }) => {
-        const payload = classifyAgentRouting(message, { cwd });
+    async ({ message, cwd, context_key }) => {
+        const payload = classifyAgentRouting(message, { cwd, contextKey: context_key });
         return {
             content: [{ type: 'text', text: JSON.stringify(payload, null, 2) }],
             structuredContent: payload,
@@ -69,6 +71,7 @@ The tool persists the latest session bridge automatically, so follow-up confirma
             message: z.string().min(1).describe('The raw user message from the OpenClaw conversation.'),
             cwd: z.string().optional().describe('Optional working directory used to resolve relative paths.'),
             persist_artifacts: z.boolean().default(true).describe('Persist planning artifacts when the turn enters analyze mode.'),
+            context_key: z.string().optional().describe('Stable host-side conversation key, for example feishu-chat-123 or telegram-user-42.'),
         },
         annotations: {
             readOnlyHint: false,
@@ -77,14 +80,16 @@ The tool persists the latest session bridge automatically, so follow-up confirma
             openWorldHint: false,
         },
     },
-    async ({ message, cwd, persist_artifacts }) => {
+    async ({ message, cwd, persist_artifacts, context_key }) => {
         const envelope = handleAgentMessage(message, {
             cwd,
             write: persist_artifacts,
+            contextKey: context_key,
         });
         return makeTextResult(formatAgentEnvelope(envelope, {
             cwd,
             write: persist_artifacts,
+            contextKey: context_key,
         }));
     },
 );
@@ -94,7 +99,9 @@ server.registerTool(
     {
         title: 'ClawOmics Latest Context',
         description: 'Return the latest persisted conversation bridge so OpenClaw can inspect remembered dataset/session state.',
-        inputSchema: {},
+        inputSchema: {
+            context_key: z.string().optional().describe('Optional conversation key. If omitted, the default bridge state is used.'),
+        },
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -102,8 +109,9 @@ server.registerTool(
             openWorldHint: false,
         },
     },
-    async () => {
-        const payload = getBridgeState() || {
+    async ({ context_key }) => {
+        const payload = getBridgeState({ contextKey: context_key }) || {
+            contextKey: context_key || 'default',
             message: 'No persisted ClawOmics bridge state was found yet.',
         };
         return {
@@ -120,6 +128,7 @@ server.registerTool(
         description: 'Read a persisted ClawOmics session. If no path is provided, use the latest remembered session from the bridge state.',
         inputSchema: {
             session_path: z.string().optional().describe('Optional explicit path to agent_session.json.'),
+            context_key: z.string().optional().describe('Optional conversation key used to resolve the remembered session when session_path is omitted.'),
         },
         annotations: {
             readOnlyHint: true,
@@ -128,13 +137,37 @@ server.registerTool(
             openWorldHint: false,
         },
     },
-    async ({ session_path }) => {
-        const latest = getBridgeState();
+    async ({ session_path, context_key }) => {
+        const latest = getBridgeState({ contextKey: context_key });
         const effectivePath = session_path || latest?.sessionPath;
         const payload = effectivePath
             ? getAgentSession(effectivePath)
             : { message: 'No session path is available yet.' };
 
+        return {
+            content: [{ type: 'text', text: JSON.stringify(payload, null, 2) }],
+            structuredContent: payload,
+        };
+    },
+);
+
+server.registerTool(
+    'clawomics_clear_context',
+    {
+        title: 'ClawOmics Clear Context',
+        description: 'Clear the remembered bridge state for one chat context. Use this when a host thread should no longer auto-resume an older dataset session.',
+        inputSchema: {
+            context_key: z.string().optional().describe('Optional conversation key. If omitted, the default bridge state is cleared.'),
+        },
+        annotations: {
+            readOnlyHint: false,
+            destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
+        },
+    },
+    async ({ context_key }) => {
+        const payload = clearBridgeState({ contextKey: context_key });
         return {
             content: [{ type: 'text', text: JSON.stringify(payload, null, 2) }],
             structuredContent: payload,

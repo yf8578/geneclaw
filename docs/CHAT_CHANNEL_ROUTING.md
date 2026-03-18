@@ -23,9 +23,12 @@ Input:
 
 ```json
 {
-  "message": "原始聊天消息"
+  "message": "原始聊天消息",
+  "context_key": "feishu-chat-123"
 }
 ```
+
+`context_key` should be a stable host-side identifier for one conversation, thread, or chat room. This prevents a Telegram confirmation turn from resuming a Feishu dataset by mistake.
 
 ### Step 2: inspect the decision
 
@@ -77,6 +80,21 @@ Host:
 1. `clawomics_should_route_message`
 2. if true, `clawomics_agent_turn`
 3. send `assistantReply` and run paths back to the user
+
+## Context Isolation
+
+When the host supports multiple concurrent chats, always pass the same `context_key` to:
+
+- `clawomics_should_route_message`
+- `clawomics_agent_turn`
+- `clawomics_get_latest_context`
+- `clawomics_get_session` when `session_path` is omitted
+
+If the operator wants to drop the remembered bridge for one chat, call:
+
+- `clawomics_clear_context`
+
+This only clears the lightweight bridge state. It does not delete the underlying `agent_session.json` or any run artifacts.
 
 ## Why this split matters
 

@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "bin": {
-    "clawomics": "./scripts/clawomics.mjs"
+    "clawomics": "./scripts/clawomics.mjs",
+    "clawomics-mcp-server": "./mcp/clawomics-mcp-server.mjs"
   },
   "description": "Bioinformatics agent framework and MCP bridge for OpenClaw",
   "scripts": {

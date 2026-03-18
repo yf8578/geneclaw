@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { execFileSync } from 'child_process';
 import { existsSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -10,6 +11,19 @@ const packageJsonPath = path.join(projectRoot, 'package.json');
 const packageLockPath = path.join(projectRoot, 'package-lock.json');
 const nodeModulesPath = path.join(projectRoot, 'node_modules');
 const serverPath = path.join(projectRoot, 'mcp', 'clawomics-mcp-server.mjs');
+const linkedMcpBin = path.join(nodeModulesPath, '.bin', 'clawomics-mcp-server');
+const mcpBinName = 'clawomics-mcp-server';
+
+function isCommandAvailable(command) {
+    try {
+        execFileSync('which', [command], {
+            stdio: ['ignore', 'ignore', 'ignore'],
+        });
+        return true;
+    } catch {
+        return false;
+    }
+}
 
 const checks = [
     {
@@ -47,6 +61,11 @@ for (const check of checks) {
 
 console.log('');
 console.log('Recommended OpenClaw MCP command:');
+if (existsSync(linkedMcpBin) || isCommandAvailable(mcpBinName)) {
+    console.log(mcpBinName);
+    console.log('');
+    console.log('Fallback command:');
+}
 console.log(`node ${serverPath}`);
 
 if (failed.length > 0) {

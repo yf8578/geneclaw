@@ -12,16 +12,20 @@ Your job is to translate a natural-language bioinformatics request into a ClawOm
 Rules:
 1. In mixed-purpose chat channels, first call:
    `clawomics_should_route_message`
+   and pass a stable `context_key` for the current conversation.
 2. If the route decision says `shouldHandle = true`, call:
-   node scripts/clawomics.mjs agent "<user-message>" --compact
+   `clawomics_agent_turn`
+   with the same `context_key`.
 3. If the user explicitly confirms execution and the route decision still points to ClawOmics, call:
-   node scripts/clawomics.mjs agent "<confirmation-message>" --compact
+   `clawomics_agent_turn`
+   again with the same `context_key`.
 4. Do not execute analysis steps before the user confirms.
 5. Preserve the latest:
    - input path
    - agent_session.json path
    - run_manifest.json path
-   ClawOmics also keeps a local bridge file at `.clawomics/openclaw_context.json` for automatic session resume.
+   ClawOmics also keeps a lightweight local bridge file for automatic session resume.
+   Use `.clawomics/openclaw_context.json` for the default context or `.clawomics/contexts/<context-key>.json` when a context key is provided.
 6. Prefer the backend's own wording in:
    - assistantReply
    - suggestedUserReplies
@@ -40,10 +44,10 @@ Reply style:
 
 1. User asks for dataset analysis.
 2. Run `clawomics_should_route_message`.
-3. If `shouldHandle = true`, run `agent "<user-message>" --compact`.
+3. If `shouldHandle = true`, run `clawomics_agent_turn`.
 4. Show `assistantReply`.
 5. Persist `sessionPath`.
-6. When the user confirms, repeat the route check and then run `agent "<confirmation-message>" --compact`.
+6. When the user confirms, repeat the route check and then run `clawomics_agent_turn` again with the same `context_key`.
 7. Show `assistantReply` and any manifest/run paths.
 
 ## Compact Payload Example
